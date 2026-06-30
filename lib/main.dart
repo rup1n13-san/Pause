@@ -3,6 +3,7 @@ import 'package:mobile/app/app.bottomsheets.dart';
 import 'package:mobile/app/app.dialogs.dart';
 import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/app/app.router.dart';
+import 'package:mobile/core/theme/app_theme.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 Future<void> main() async {
@@ -19,6 +20,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Pause',
+      debugShowCheckedModeBanner: false,
+      theme: PauseTheme.light,
+      darkTheme: PauseTheme.dark,
+      themeMode: ThemeMode.system,
       initialRoute: Routes.startupView,
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,

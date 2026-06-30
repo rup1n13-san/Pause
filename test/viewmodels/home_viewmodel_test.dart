@@ -1,44 +1,28 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mobile/app/app.bottomsheets.dart';
 import 'package:mobile/app/app.locator.dart';
-import 'package:mobile/ui/common/app_strings.dart';
-import 'package:mobile/ui/views/home/home_viewmodel.dart';
+import 'package:mobile/core/models/pause_enums.dart';
+import 'package:mobile/core/services/ritual_session_service.dart';
+import 'package:mobile/features/home/home_viewmodel.dart';
 
 import '../helpers/test_helpers.dart';
 
 void main() {
-  HomeViewModel getModel() => HomeViewModel();
+  group('HomeViewModel -', () {
+    late RitualSessionService session;
 
-  group('HomeViewmodelTest -', () {
-    setUp(() => registerServices());
+    setUp(() {
+      registerServices();
+      session = RitualSessionService()
+        ..feeling = Feeling.bored
+        ..substitute = 'Walk';
+      locator.registerSingleton<RitualSessionService>(session);
+    });
     tearDown(() => locator.reset());
 
-    group('incrementCounter -', () {
-      test('When called once should return  Counter is: 1', () {
-        final model = getModel();
-        model.incrementCounter();
-        expect(model.counterLabel, 'Counter is: 1');
-      });
-    });
-
-    group('showBottomSheet -', () {
-      test(
-        'When called, should show custom bottom sheet using notice variant',
-        () {
-          final bottomSheetService = getAndRegisterBottomSheetService();
-
-          final model = getModel();
-          model.showBottomSheet();
-          verify(
-            bottomSheetService.showCustomSheet(
-              variant: BottomSheetType.notice,
-              title: ksHomeBottomSheetTitle,
-              description: ksHomeBottomSheetDescription,
-            ),
-          );
-        },
-      );
+    test('beginFlow clears any leftover state from a previous run', () {
+      HomeViewModel().beginFlow();
+      expect(session.feeling, isNull);
+      expect(session.substitute, isNull);
     });
   });
 }
