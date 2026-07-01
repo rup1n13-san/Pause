@@ -10,11 +10,22 @@ class PauseColors {
   static const text = Color(0xFFEAD7B8);
   static const amber = Color(0xFFD4A875);
 
+  // Dark — breath orb (Slice 1). orbA→orbB is the inner orb's radial gradient
+  // (upper-left highlight → edge); glow is the outer halo (50% alpha amber).
+  static const orbA = Color(0xFFF0CF99);
+  static const orbB = Color(0xFFA67944);
+  static const glow = Color(0x80D4A875);
+
   // Light
   static const lightBg = Color(0xFFF3EBDD);
   static const lightPanel = Color(0xFFFBF6EC);
   static const lightText = Color(0xFF352A1A);
   static const lightAmber = Color(0xFFB07636);
+
+  // Light — breath orb (Slice 1).
+  static const lightOrbA = Color(0xFFF3D29A);
+  static const lightOrbB = Color(0xFFC4945A);
+  static const lightGlow = Color(0x61C9965A);
 }
 
 class PauseTheme {
