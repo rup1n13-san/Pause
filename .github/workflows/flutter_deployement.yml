@@ -22,11 +22,13 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build apk
-      - run: flutter build appbundle
-      - name: Distribute APK via Firebase
-        run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-          --app ${{ secrets.FIREBASE_APP_ID }} \
-          --groups testers \
-          --token ${{ secrets.FIREBASE_TOKEN }}
+      - run: flutter build apk --release
+      - run: flutter build appbundle --release
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pause-app-build
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+          retention-days: 7
