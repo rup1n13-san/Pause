@@ -17,18 +17,20 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Before we begin', style: TextStyle(fontSize: 24)),
-              const SizedBox(height: 16),
-              const Text('Everything stays on this phone.'),
-              const SizedBox(height: 32),
-              FilledButton(
-                onPressed: viewModel.finishSetup,
-                child: const Text("I'm ready"),
-              ),
-            ],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Before we begin', style: TextStyle(fontSize: 24)),
+                const SizedBox(height: 16),
+                const Text('Everything stays on this phone.'),
+                const SizedBox(height: 32),
+                FilledButton(
+                  onPressed: viewModel.finishSetup,
+                  child: const Text("I'm ready"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
