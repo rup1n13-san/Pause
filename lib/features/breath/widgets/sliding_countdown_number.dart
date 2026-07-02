@@ -26,7 +26,7 @@ class SlidingCountdownNumber extends StatefulWidget {
 
 class _SlidingCountdownNumberState extends State<SlidingCountdownNumber>
     with SingleTickerProviderStateMixin {
-  static const _duration = Duration(milliseconds: 260);
+  static const _duration = Duration(milliseconds: 400);
 
   late final AnimationController _controller;
   late final CurvedAnimation _progress;

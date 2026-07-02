@@ -136,6 +136,10 @@ class _TopRow extends StatelessWidget {
       letterSpacing: 3,
       color: muted,
     );
+    // Deliberately larger than the static label: a lone digit at 11px moving
+    // over ~13px is too small a throw to read as a slide at a glance — this
+    // gives the countdown enough size for the motion to actually register.
+    final countdownStyle = TextStyle(fontSize: 15, color: muted);
     final seconds = countdownSeconds;
 
     return Row(
@@ -143,7 +147,7 @@ class _TopRow extends StatelessWidget {
       children: [
         seconds == null
             ? Text('4 · 7 · 8', style: labelStyle)
-            : SlidingCountdownNumber(value: seconds, style: labelStyle),
+            : SlidingCountdownNumber(value: seconds, style: countdownStyle),
         Row(
           children: List.generate(total, (i) {
             return Padding(
