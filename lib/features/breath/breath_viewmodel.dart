@@ -164,6 +164,12 @@ class BreathViewModel extends BaseViewModel {
   int _completedCycles = 0;
   bool _started = false;
 
+  /// Purely cosmetic 1s ticker for the top-left countdown badge. It never
+  /// advances the ritual itself — [_timer] alone owns phase timing — so the
+  /// display can't drift out of sync with the actual phase boundaries.
+  Timer? _countdownTicker;
+  int? _secondsRemaining;
+
   BreathPhase get currentPhase => phases[_index];
 
   /// Dots to light: dot `i` is lit when `i < completedCycles`.
@@ -172,6 +178,11 @@ class BreathViewModel extends BaseViewModel {
   int get totalCycles => cycleCount;
 
   bool get isComplete => currentPhase.type == BreathPhaseType.done;
+
+  /// Whole seconds remaining in the current phase, counting down to `1`
+  /// (never `0`) — `null` during Settle in / Softly done, which have no
+  /// 4-7-8 duration to count.
+  int? get countdownSeconds => _secondsRemaining;
 
   /// Starts the ritual. Idempotent — calling twice does not restart it.
   void start() {
@@ -190,6 +201,7 @@ class BreathViewModel extends BaseViewModel {
       HapticFeedback.lightImpact();
     }
 
+    _startCountdown(phase);
     notifyListeners();
 
     _timer = Timer(phase.duration, () {
@@ -203,6 +215,32 @@ class BreathViewModel extends BaseViewModel {
     });
   }
 
+  /// (Re)starts the cosmetic countdown for [phase]. Counting phases begin at
+  /// their full duration in whole seconds and tick down once per second,
+  /// floored at `1` so the badge never visibly shows `0` — it swaps straight
+  /// to the next phase's starting number when [_timer] fires above.
+  void _startCountdown(BreathPhase phase) {
+    _countdownTicker?.cancel();
+
+    final isCounting = phase.type == BreathPhaseType.breatheIn ||
+        phase.type == BreathPhaseType.hold ||
+        phase.type == BreathPhaseType.breatheOut;
+
+    if (!isCounting) {
+      _countdownTicker = null;
+      _secondsRemaining = null;
+      return;
+    }
+
+    _secondsRemaining = phase.duration.inSeconds;
+    _countdownTicker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_secondsRemaining != null && _secondsRemaining! > 1) {
+        _secondsRemaining = _secondsRemaining! - 1;
+        notifyListeners();
+      }
+    });
+  }
+
   /// Only meaningful once [isComplete] is true — the completion "Continue"
   /// button is the sole control the ritual ever exposes.
   void continueToOfframp() => _navigationService.navigateToOfframpView();
@@ -211,6 +249,8 @@ class BreathViewModel extends BaseViewModel {
   void dispose() {
     _timer?.cancel();
     _timer = null;
+    _countdownTicker?.cancel();
+    _countdownTicker = null;
     super.dispose();
   }
 }
