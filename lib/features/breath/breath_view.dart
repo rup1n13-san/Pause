@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 
 import 'breath_viewmodel.dart';
 import 'widgets/breath_orb.dart';
+import 'widgets/sliding_countdown_number.dart';
 
 /// The un-skippable box-breathing ritual (Slice 1 showpiece).
 ///
@@ -38,6 +39,7 @@ class BreathView extends StackedView<BreathViewModel> {
                 unlitColor: muted.withValues(alpha: 0.3),
                 total: viewModel.totalCycles,
                 lit: viewModel.completedCycles,
+                countdownSeconds: viewModel.countdownSeconds,
               ),
               Expanded(
                 child: Column(
@@ -106,6 +108,10 @@ class BreathView extends StackedView<BreathViewModel> {
 }
 
 /// Top row: the "4 · 7 · 8" label (left) and the three cycle dots (right).
+///
+/// The label is static during Settle in / Softly done (no 4-7-8 duration to
+/// count for those), and becomes a live per-second countdown of the active
+/// phase — 4→1, 7→1, 8→1 — while a breath cycle is running.
 class _TopRow extends StatelessWidget {
   const _TopRow({
     required this.muted,
@@ -113,6 +119,7 @@ class _TopRow extends StatelessWidget {
     required this.unlitColor,
     required this.total,
     required this.lit,
+    required this.countdownSeconds,
   });
 
   final Color muted;
@@ -120,20 +127,23 @@ class _TopRow extends StatelessWidget {
   final Color unlitColor;
   final int total;
   final int lit;
+  final int? countdownSeconds;
 
   @override
   Widget build(BuildContext context) {
+    final labelStyle = TextStyle(
+      fontSize: 11,
+      letterSpacing: 3,
+      color: muted,
+    );
+    final seconds = countdownSeconds;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          '4 · 7 · 8',
-          style: TextStyle(
-            fontSize: 11,
-            letterSpacing: 3,
-            color: muted,
-          ),
-        ),
+        seconds == null
+            ? Text('4 · 7 · 8', style: labelStyle)
+            : SlidingCountdownNumber(value: seconds, style: labelStyle),
         Row(
           children: List.generate(total, (i) {
             return Padding(

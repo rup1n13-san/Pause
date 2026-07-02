@@ -1,7 +1,13 @@
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/features/breath/breath_viewmodel.dart';
 
+import '../helpers/test_helpers.dart';
+
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('BreathViewModel phase sequence -', () {
     const phases = BreathViewModel.phases;
 
@@ -70,6 +76,65 @@ void main() {
       expect(total, const Duration(milliseconds: 61000));
       expect(total.inSeconds, greaterThanOrEqualTo(60));
       expect(total.inSeconds, lessThanOrEqualTo(90));
+    });
+  });
+
+  group('BreathViewModel countdown badge -', () {
+    setUp(registerServices);
+    tearDown(() => locator.reset());
+
+    test('is null during Settle in, then counts each active phase down to 1',
+        () {
+      fakeAsync((async) {
+        final viewModel = BreathViewModel();
+        viewModel.start();
+
+        // Settle in: nothing to count down.
+        expect(viewModel.countdownSeconds, isNull);
+
+        // Settle in (1800ms) elapses → Breathe in starts at 4.
+        async.elapse(const Duration(milliseconds: 1800));
+        expect(viewModel.currentPhase.type, BreathPhaseType.breatheIn);
+        expect(viewModel.countdownSeconds, 4);
+
+        async.elapse(const Duration(seconds: 1));
+        expect(viewModel.countdownSeconds, 3);
+        async.elapse(const Duration(seconds: 1));
+        expect(viewModel.countdownSeconds, 2);
+        async.elapse(const Duration(seconds: 1));
+        expect(viewModel.countdownSeconds, 1);
+
+        // The 4th second elapses → Breathe in ends, Hold starts at 7. The
+        // badge must never have visibly shown 0.
+        async.elapse(const Duration(seconds: 1));
+        expect(viewModel.currentPhase.type, BreathPhaseType.hold);
+        expect(viewModel.countdownSeconds, 7);
+
+        // Hold ticks 7 → 1 over 6s, then the 7th second hands off to
+        // Breathe out at 8.
+        async.elapse(const Duration(seconds: 6));
+        expect(viewModel.countdownSeconds, 1);
+        async.elapse(const Duration(seconds: 1));
+        expect(viewModel.currentPhase.type, BreathPhaseType.breatheOut);
+        expect(viewModel.countdownSeconds, 8);
+
+        viewModel.dispose();
+      });
+    });
+
+    test('is null again once Softly done is reached', () {
+      fakeAsync((async) {
+        final viewModel = BreathViewModel();
+        viewModel.start();
+
+        async.elapse(
+          BreathViewModel.totalDuration - const Duration(milliseconds: 2200),
+        );
+        expect(viewModel.currentPhase.type, BreathPhaseType.done);
+        expect(viewModel.countdownSeconds, isNull);
+
+        viewModel.dispose();
+      });
     });
   });
 }
