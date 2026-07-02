@@ -7,6 +7,9 @@ import 'dart:async' as _i5;
 import 'dart:ui' as _i6;
 
 import 'package:flutter/material.dart' as _i4;
+import 'package:mobile/core/data/database/app_database.dart' as _i9;
+import 'package:mobile/core/models/pause_enums.dart' as _i8;
+import 'package:mobile/core/services/database_service.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i3;
 import 'package:stacked_services/stacked_services.dart' as _i2;
@@ -683,4 +686,50 @@ class MockDialogService extends _i1.Mock implements _i2.DialogService {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [DatabaseService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
+  @override
+  _i5.Future<int> recordEvent({
+    required _i8.Feeling? feeling,
+    String? substitute,
+    required _i8.UrgeOutcome? outcome,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #recordEvent,
+          [],
+          {
+            #feeling: feeling,
+            #substitute: substitute,
+            #outcome: outcome,
+          },
+        ),
+        returnValue: _i5.Future<int>.value(0),
+        returnValueForMissingStub: _i5.Future<int>.value(0),
+      ) as _i5.Future<int>);
+
+  @override
+  _i5.Future<int> eventCount() => (super.noSuchMethod(
+        Invocation.method(
+          #eventCount,
+          [],
+        ),
+        returnValue: _i5.Future<int>.value(0),
+        returnValueForMissingStub: _i5.Future<int>.value(0),
+      ) as _i5.Future<int>);
+
+  @override
+  _i5.Future<List<_i9.UrgeEvent>> allEvents() => (super.noSuchMethod(
+        Invocation.method(
+          #allEvents,
+          [],
+        ),
+        returnValue: _i5.Future<List<_i9.UrgeEvent>>.value(<_i9.UrgeEvent>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i9.UrgeEvent>>.value(<_i9.UrgeEvent>[]),
+      ) as _i5.Future<List<_i9.UrgeEvent>>);
 }
