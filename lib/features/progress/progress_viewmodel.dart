@@ -1,4 +1,5 @@
 import 'package:mobile/app/app.locator.dart';
+import 'package:mobile/core/models/progress_insights.dart';
 import 'package:mobile/core/services/database_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -7,11 +8,12 @@ class ProgressViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _databaseService = locator<DatabaseService>();
 
-  int showedUpCount = 0;
+  /// Null until the first load resolves; the view shows only its header
+  /// until then.
+  ProgressInsights? insights;
 
-  // Slice 0: just the count. Feeling/time-of-day insights come in Slice 3.
   Future<void> load() async {
-    showedUpCount = await _databaseService.eventCount();
+    insights = ProgressInsights.fromEvents(await _databaseService.allEvents());
     rebuildUi();
   }
 

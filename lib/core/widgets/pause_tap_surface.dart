@@ -16,12 +16,17 @@ class PauseTapSurface extends StatefulWidget {
     required this.onTap,
     required this.isDark,
     required this.child,
+    this.selected = false,
     this.padding = const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
   });
 
   final VoidCallback onTap;
   final bool isDark;
   final Widget child;
+
+  /// When true the surface holds the active look (amber border + `chipA` fill)
+  /// even when not pressed — used by the setup screen's multi-select chips.
+  final bool selected;
   final EdgeInsetsGeometry padding;
 
   @override
@@ -42,6 +47,8 @@ class _PauseTapSurfaceState extends State<PauseTapSurface> {
     final line = widget.isDark ? PauseColors.line : PauseColors.lightLine;
     final amber = widget.isDark ? PauseColors.amber : PauseColors.lightAmber;
 
+    final active = _pressed || widget.selected;
+
     return GestureDetector(
       onTap: widget.onTap,
       onTapDown: (_) => _setPressed(true),
@@ -52,9 +59,9 @@ class _PauseTapSurfaceState extends State<PauseTapSurface> {
         curve: Curves.easeOut,
         padding: widget.padding,
         decoration: BoxDecoration(
-          color: _pressed ? chipA : chip,
+          color: active ? chipA : chip,
           borderRadius: BorderRadius.circular(13),
-          border: Border.all(color: _pressed ? amber : line, width: 1),
+          border: Border.all(color: active ? amber : line, width: 1),
         ),
         child: widget.child,
       ),
