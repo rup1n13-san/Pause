@@ -7,6 +7,20 @@ class SettingsService {
   static const _kNote = 'pause_note';
   static const _kSetup = 'pause_setup';
 
+  /// Every substitute the setup screen offers as a chip.
+  static const presetSubstitutes = <String>[
+    'Push-ups',
+    'Walk',
+    'Cold water',
+    'Music',
+    'Message a friend',
+    'Step outside',
+    'Stretch',
+    'Read',
+  ];
+
+  /// The subset pre-selected on first run (and the fallback when nothing is
+  /// saved yet), so the Off-ramp always has options.
   static const defaultSubstitutes = <String>[
     'Push-ups',
     'Walk',

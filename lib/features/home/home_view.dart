@@ -7,8 +7,8 @@ import 'home_viewmodel.dart';
 import 'widgets/pulsing_orb.dart';
 
 /// Home: the calm entry point. The pulsing orb is the single CTA (tap → begin
-/// the flow). No "noticed N× this week" insight banner yet — that needs pattern
-/// analytics that don't exist (deferred to a later slice).
+/// the flow). Once there's enough history, a quiet "noticed N× this week"
+/// banner surfaces above the orb.
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({super.key});
 
@@ -18,6 +18,11 @@ class HomeView extends StackedView<HomeViewModel> {
     final text = isDark ? PauseColors.text : PauseColors.lightText;
     final muted = isDark ? PauseColors.muted : PauseColors.lightMuted;
     final faint = isDark ? PauseColors.faint : PauseColors.lightFaint;
+    final amber = isDark ? PauseColors.amber : PauseColors.lightAmber;
+    final chipA = isDark ? PauseColors.chipA : PauseColors.lightChipA;
+
+    final insights = viewModel.insights;
+    final showBanner = insights != null && insights.hasInsights;
 
     return Scaffold(
       body: SafeArea(
@@ -42,6 +47,23 @@ class HomeView extends StackedView<HomeViewModel> {
                 ],
               ),
               const Spacer(),
+              if (showBanner) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 9,
+                  ),
+                  decoration: BoxDecoration(
+                    color: chipA,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(
+                    insights.homeBanner,
+                    style: PauseTextStyles.meta(color: amber),
+                  ),
+                ),
+                const SizedBox(height: 26),
+              ],
               PulsingOrb(
                 outerSize: 198,
                 innerSize: 116,
@@ -75,6 +97,9 @@ class HomeView extends StackedView<HomeViewModel> {
       ),
     );
   }
+
+  @override
+  void onViewModelReady(HomeViewModel viewModel) => viewModel.load();
 
   @override
   HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
