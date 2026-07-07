@@ -29,23 +29,23 @@ class ProgressView extends StackedView<ProgressViewModel> {
     final chip = isDark ? PauseColors.chip : PauseColors.lightChip;
 
     Widget card(Widget child) => Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: panel,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: line, width: 1),
-      ),
-      child: child,
-    );
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: panel,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: line, width: 1),
+          ),
+          child: child,
+        );
 
     Text metaLabel(String label) => Text(
-      label.toUpperCase(),
-      style: PauseTextStyles.meta(
-        color: faint,
-        fontSize: 11,
-      ).copyWith(letterSpacing: 1.1),
-    );
+          label.toUpperCase(),
+          style: PauseTextStyles.meta(
+            color: faint,
+            fontSize: 11,
+          ).copyWith(letterSpacing: 1.1),
+        );
 
     final insights = viewModel.insights;
 
@@ -74,19 +74,27 @@ class ProgressView extends StackedView<ProgressViewModel> {
                 if (insights.hasInsights) ...[
                   const SizedBox(height: 14),
                   card(
-                    _feelingBlock(insights, metaLabel, text, muted, amber, chip),
+                    _feelingBlock(
+                        insights, metaLabel, text, muted, amber, chip),
                   ),
                   const SizedBox(height: 14),
-                  card(_timeBlock(insights, metaLabel, text, faint, amber, line)),
+                  card(_timeBlock(
+                      insights, metaLabel, text, faint, amber, line)),
                   const SizedBox(height: 14),
-                  card(_daysBlock(insights, metaLabel, muted, amber, chip, line)),
+                  card(_daysBlock(
+                      insights, metaLabel, muted, amber, chip, line)),
                   if (viewModel.showReofferCard) ...[
                     const SizedBox(height: 14),
-                    card(_reofferBlock(viewModel, metaLabel, text, muted, amber)),
+                    card(_reofferBlock(
+                        viewModel, metaLabel, text, muted, amber)),
                   ],
                   if (viewModel.invitesEnabled) ...[
                     const SizedBox(height: 14),
                     _toggleRow(viewModel, text, amber),
+                  ],
+                  if (!viewModel.hasUsageAccess) ...[
+                    const SizedBox(height: 14),
+                    card(_usageOptInCard(viewModel, text, muted, amber)),
                   ],
                 ] else ...[
                   const SizedBox(height: 14),
@@ -101,56 +109,56 @@ class ProgressView extends StackedView<ProgressViewModel> {
   }
 
   Widget _totalBlock(int total, Color text, Color muted, Color faint) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "You've shown up",
-        style: PauseTextStyles.body(color: muted, fontSize: 15),
-      ),
-      const SizedBox(height: 6),
-      Text.rich(
-        TextSpan(
-          children: [
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "You've shown up",
+            style: PauseTextStyles.body(color: muted, fontSize: 15),
+          ),
+          const SizedBox(height: 6),
+          Text.rich(
             TextSpan(
-              text: '$total',
-              style: TextStyle(
-                fontFamily: 'DM Mono',
-                fontWeight: FontWeight.w500,
-                fontSize: 44,
-                height: 1,
-                color: text,
-              ),
+              children: [
+                TextSpan(
+                  text: '$total',
+                  style: TextStyle(
+                    fontFamily: 'DM Mono',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 44,
+                    height: 1,
+                    color: text,
+                  ),
+                ),
+                TextSpan(
+                  text: '   times',
+                  style: PauseTextStyles.body(color: muted, fontSize: 16),
+                ),
+              ],
             ),
-            TextSpan(
-              text: '   times',
-              style: PauseTextStyles.body(color: muted, fontSize: 16),
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 6),
-      Text(
-        'Each one is a moment you met on purpose.',
-        style: PauseTextStyles.body(color: faint, fontSize: 13),
-      ),
-    ],
-  );
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Each one is a moment you met on purpose.',
+            style: PauseTextStyles.body(color: faint, fontSize: 13),
+          ),
+        ],
+      );
 
   Widget _emptyBlock(Color text, Color muted) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        'A pattern will surface soon.',
-        style: PauseTextStyles.title(fontSize: 18, color: text),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        "A few more moments and this fills in — when the urge tends to "
-        "visit, and what's underneath it. Nothing to force. Keep showing up.",
-        style: PauseTextStyles.body(color: muted, fontSize: 13.5),
-      ),
-    ],
-  );
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'A pattern will surface soon.',
+            style: PauseTextStyles.title(fontSize: 18, color: text),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "A few more moments and this fills in — when the urge tends to "
+            "visit, and what's underneath it. Nothing to force. Keep showing up.",
+            style: PauseTextStyles.body(color: muted, fontSize: 13.5),
+          ),
+        ],
+      );
 
   Widget _feelingBlock(
     ProgressInsights insights,
@@ -221,55 +229,56 @@ class ProgressView extends StackedView<ProgressViewModel> {
     Color faint,
     Color amber,
     Color line,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      metaLabel('when it tends to hit'),
-      const SizedBox(height: 10),
-      Text(
-        insights.peakLine,
-        style: PauseTextStyles.title(fontSize: 17, color: text),
-      ),
-      const SizedBox(height: 16),
-      SizedBox(
-        height: 42,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            for (final d in insights.hourDensity)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 1),
-                  child: Container(
-                    height: d > 0 ? 6 + d * 36 : 3,
-                    decoration: BoxDecoration(
-                      color: d > 0
-                          ? amber.withValues(alpha: 0.4 + d * 0.6)
-                          : line,
-                      borderRadius: BorderRadius.circular(2),
+  ) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          metaLabel('when it tends to hit'),
+          const SizedBox(height: 10),
+          Text(
+            insights.peakLine,
+            style: PauseTextStyles.title(fontSize: 17, color: text),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 42,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                for (final d in insights.hourDensity)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 1),
+                      child: Container(
+                        height: d > 0 ? 6 + d * 36 : 3,
+                        decoration: BoxDecoration(
+                          color: d > 0
+                              ? amber.withValues(alpha: 0.4 + d * 0.6)
+                              : line,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 7),
-      DefaultTextStyle(
-        style: PauseTextStyles.meta(color: faint, fontSize: 9),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('12a'),
-            Text('6a'),
-            Text('12p'),
-            Text('6p'),
-            Text('12a'),
-          ],
-        ),
-      ),
-    ],
-  );
+              ],
+            ),
+          ),
+          const SizedBox(height: 7),
+          DefaultTextStyle(
+            style: PauseTextStyles.meta(color: faint, fontSize: 9),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('12a'),
+                Text('6a'),
+                Text('12p'),
+                Text('6p'),
+                Text('12a'),
+              ],
+            ),
+          ),
+        ],
+      );
 
   Widget _daysBlock(
     ProgressInsights insights,
@@ -278,35 +287,36 @@ class ProgressView extends StackedView<ProgressViewModel> {
     Color amber,
     Color chip,
     Color line,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      metaLabel('last two weeks'),
-      const SizedBox(height: 14),
-      Wrap(
-        spacing: 6,
-        runSpacing: 6,
+  ) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          for (final filled in insights.dayCells)
-            Container(
-              width: 15,
-              height: 15,
-              decoration: BoxDecoration(
-                color: filled ? amber : chip,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: filled ? amber : line, width: 1),
-              ),
-            ),
+          metaLabel('last two weeks'),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              for (final filled in insights.dayCells)
+                Container(
+                  width: 15,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: filled ? amber : chip,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: filled ? amber : line, width: 1),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Text(
+            "Gaps aren't failures — they're just days. You came back, and that's "
+            'the whole practice.',
+            style: PauseTextStyles.body(color: muted, fontSize: 13),
+          ),
         ],
-      ),
-      const SizedBox(height: 14),
-      Text(
-        "Gaps aren't failures — they're just days. You came back, and that's "
-        'the whole practice.',
-        style: PauseTextStyles.body(color: muted, fontSize: 13),
-      ),
-    ],
-  );
+      );
 
   Widget _reofferBlock(
     ProgressViewModel viewModel,
@@ -314,41 +324,42 @@ class ProgressView extends StackedView<ProgressViewModel> {
     Color text,
     Color muted,
     Color amber,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      metaLabel('proactive'),
-      const SizedBox(height: 10),
-      Text(
-        'Want a gentle nudge?',
-        style: PauseTextStyles.title(fontSize: 17, color: text),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        'We can send an optional invitation to pause when you usually reach for this.',
-        style: PauseTextStyles.body(color: muted, fontSize: 13.5),
-      ),
-      const SizedBox(height: 16),
-      Row(
+  ) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: FilledButton(
-              onPressed: () => viewModel.toggleInvites(true),
-              child: const Text('Enable invitations'),
-            ),
+          metaLabel('proactive'),
+          const SizedBox(height: 10),
+          Text(
+            'Want a gentle nudge?',
+            style: PauseTextStyles.title(fontSize: 17, color: text),
           ),
-          const SizedBox(width: 12),
-          TextButton(
-            onPressed: viewModel.dismissReoffer,
-            child: Text(
-              'Not now',
-              style: TextStyle(color: muted),
-            ),
+          const SizedBox(height: 8),
+          Text(
+            'We can send an optional invitation to pause when you usually reach for this.',
+            style: PauseTextStyles.body(color: muted, fontSize: 13.5),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: () => viewModel.toggleInvites(true),
+                  child: const Text('Enable invitations'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              TextButton(
+                onPressed: viewModel.dismissReoffer,
+                child: Text(
+                  'Not now',
+                  style: TextStyle(color: muted),
+                ),
+              ),
+            ],
           ),
         ],
-      ),
-    ],
-  );
+      );
 
   Widget _toggleRow(ProgressViewModel viewModel, Color text, Color amber) =>
       SwitchListTile(
@@ -361,6 +372,38 @@ class ProgressView extends StackedView<ProgressViewModel> {
         activeThumbColor: amber,
         value: viewModel.invitesEnabled,
         onChanged: viewModel.toggleInvites,
+      );
+
+  Widget _usageOptInCard(
+    ProgressViewModel viewModel,
+    Color text,
+    Color muted,
+    Color amber,
+  ) =>
+      InkWell(
+        onTap: viewModel.openUsageOptIn,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.auto_awesome, color: amber, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Make check-ins smarter',
+                  style: PauseTextStyles.title(fontSize: 16, color: text),
+                ),
+                const Spacer(),
+                Icon(Icons.arrow_forward_ios, color: muted, size: 14),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Predict when you might need a Pause based on your screen rhythm.',
+              style: PauseTextStyles.body(color: muted, fontSize: 13.5),
+            ),
+          ],
+        ),
       );
 
   @override

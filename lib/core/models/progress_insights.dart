@@ -60,6 +60,7 @@ class ProgressInsights {
 
   factory ProgressInsights.fromEvents(
     List<UrgeEvent> events, {
+    List<UsageBucket> usageBuckets = const [],
     DateTime? now,
   }) {
     final reference = now ?? DateTime.now();
@@ -120,11 +121,22 @@ class ProgressInsights {
     final hMax = [1, ...hCount].reduce((a, b) => a > b ? a : b);
     final hourDensity = hCount.map((c) => c / hMax).toList();
 
+    // Usage density calculation (from buckets)
+    final usageScreenMins = List.filled(24, 0);
+    for (final b in usageBuckets) {
+      usageScreenMins[b.hour] += b.screenMinutes;
+    }
+    final usageMax = [1, ...usageScreenMins].reduce((a, b) => a > b ? a : b);
+    final usageDensity = usageScreenMins.map((m) => m / usageMax).toList();
+
+    // Prediction v2 risk score
     var peakHour = 0;
-    var peakHourCount = -1;
+    var maxRisk = -1.0;
     for (var i = 0; i < 24; i++) {
-      if (hCount[i] > peakHourCount) {
-        peakHourCount = hCount[i];
+      final lateWindowWeight = (i >= 22 || i < 5) ? 0.5 : 0.0;
+      final risk = hourDensity[i] + (usageDensity[i] * lateWindowWeight);
+      if (risk > maxRisk) {
+        maxRisk = risk;
         peakHour = i;
       }
     }

@@ -12,6 +12,7 @@ import 'package:mobile/core/models/pause_enums.dart' as _i8;
 import 'package:mobile/core/services/database_service.dart' as _i7;
 import 'package:mobile/core/services/invitation_service.dart' as _i11;
 import 'package:mobile/core/services/settings_service.dart' as _i10;
+import 'package:mobile/core/services/usage_stats_service.dart' as _i12;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i3;
 import 'package:stacked_services/stacked_services.dart' as _i2;
@@ -736,6 +737,30 @@ class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
         returnValueForMissingStub:
             _i5.Future<List<_i9.UrgeEvent>>.value(<_i9.UrgeEvent>[]),
       ) as _i5.Future<List<_i9.UrgeEvent>>);
+
+  @override
+  _i5.Future<void> upsertUsageBuckets(List<_i9.UsageBucket>? buckets) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #upsertUsageBuckets,
+          [buckets],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<List<_i9.UsageBucket>> getUsageBucketsSince(DateTime? since) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUsageBucketsSince,
+          [since],
+        ),
+        returnValue:
+            _i5.Future<List<_i9.UsageBucket>>.value(<_i9.UsageBucket>[]),
+        returnValueForMissingStub:
+            _i5.Future<List<_i9.UsageBucket>>.value(<_i9.UsageBucket>[]),
+      ) as _i5.Future<List<_i9.UsageBucket>>);
 }
 
 /// A class which mocks [SettingsService].
@@ -870,6 +895,41 @@ class MockInvitationService extends _i1.Mock implements _i11.InvitationService {
   _i5.Future<void> syncSchedule() => (super.noSuchMethod(
         Invocation.method(
           #syncSchedule,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+}
+
+/// A class which mocks [UsageStatsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUsageStatsService extends _i1.Mock implements _i12.UsageStatsService {
+  @override
+  _i5.Future<bool> hasAccess() => (super.noSuchMethod(
+        Invocation.method(
+          #hasAccess,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+        returnValueForMissingStub: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<void> openSettings() => (super.noSuchMethod(
+        Invocation.method(
+          #openSettings,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> syncUsage() => (super.noSuchMethod(
+        Invocation.method(
+          #syncUsage,
           [],
         ),
         returnValue: _i5.Future<void>.value(),

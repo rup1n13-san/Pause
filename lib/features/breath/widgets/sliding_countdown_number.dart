@@ -20,8 +20,7 @@ class SlidingCountdownNumber extends StatefulWidget {
   final TextStyle style;
 
   @override
-  State<SlidingCountdownNumber> createState() =>
-      _SlidingCountdownNumberState();
+  State<SlidingCountdownNumber> createState() => _SlidingCountdownNumberState();
 }
 
 class _SlidingCountdownNumberState extends State<SlidingCountdownNumber>

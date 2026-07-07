@@ -111,40 +111,40 @@ class PauseTheme {
   );
 
   static ThemeData get dark => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: PauseColors.bg,
-    colorScheme: const ColorScheme.dark(
-      surface: PauseColors.bg,
-      primary: PauseColors.amber,
-      onPrimary: PauseColors.onAmber,
-      onSurface: PauseColors.text,
-    ),
-    filledButtonTheme: _filledButtonTheme(PauseColors.amber),
-    outlinedButtonTheme: _outlinedButtonTheme(
-      border: PauseColors.line,
-      foreground: PauseColors.text,
-      pressed: PauseColors.amber,
-    ),
-  );
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: PauseColors.bg,
+        colorScheme: const ColorScheme.dark(
+          surface: PauseColors.bg,
+          primary: PauseColors.amber,
+          onPrimary: PauseColors.onAmber,
+          onSurface: PauseColors.text,
+        ),
+        filledButtonTheme: _filledButtonTheme(PauseColors.amber),
+        outlinedButtonTheme: _outlinedButtonTheme(
+          border: PauseColors.line,
+          foreground: PauseColors.text,
+          pressed: PauseColors.amber,
+        ),
+      );
 
   static ThemeData get light => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: PauseColors.lightBg,
-    colorScheme: const ColorScheme.light(
-      surface: PauseColors.lightBg,
-      primary: PauseColors.lightAmber,
-      onPrimary: PauseColors.onAmber,
-      onSurface: PauseColors.lightText,
-    ),
-    filledButtonTheme: _filledButtonTheme(PauseColors.lightAmber),
-    outlinedButtonTheme: _outlinedButtonTheme(
-      border: PauseColors.lightLine,
-      foreground: PauseColors.lightText,
-      pressed: PauseColors.lightAmber,
-    ),
-  );
+        useMaterial3: true,
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: PauseColors.lightBg,
+        colorScheme: const ColorScheme.light(
+          surface: PauseColors.lightBg,
+          primary: PauseColors.lightAmber,
+          onPrimary: PauseColors.onAmber,
+          onSurface: PauseColors.lightText,
+        ),
+        filledButtonTheme: _filledButtonTheme(PauseColors.lightAmber),
+        outlinedButtonTheme: _outlinedButtonTheme(
+          border: PauseColors.lightLine,
+          foreground: PauseColors.lightText,
+          pressed: PauseColors.lightAmber,
+        ),
+      );
 
   /// Primary/filled button: amber fill, dark text, Nunito 600. On press a very
   /// subtle white overlay lightens the fill (M3-idiomatic; no hover on mobile).
@@ -177,30 +177,31 @@ class PauseTheme {
     required Color border,
     required Color foreground,
     required Color pressed,
-  }) => OutlinedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
-      foregroundColor: WidgetStatePropertyAll(foreground),
-      overlayColor: WidgetStateProperty.resolveWith(
-        (states) => states.contains(WidgetState.pressed)
-            ? pressed.withValues(alpha: 0.08)
-            : null,
-      ),
-      side: WidgetStateProperty.resolveWith(
-        (states) => BorderSide(
-          color: states.contains(WidgetState.pressed) ? pressed : border,
-          width: 1,
+  }) =>
+      OutlinedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+          foregroundColor: WidgetStatePropertyAll(foreground),
+          overlayColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.pressed)
+                ? pressed.withValues(alpha: 0.08)
+                : null,
+          ),
+          side: WidgetStateProperty.resolveWith(
+            (states) => BorderSide(
+              color: states.contains(WidgetState.pressed) ? pressed : border,
+              width: 1,
+            ),
+          ),
+          padding: const WidgetStatePropertyAll(_buttonPadding),
+          shape: WidgetStatePropertyAll(_buttonShape),
+          textStyle: const WidgetStatePropertyAll(
+            TextStyle(
+              fontFamily: 'Nunito',
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
+            ),
+          ),
         ),
-      ),
-      padding: const WidgetStatePropertyAll(_buttonPadding),
-      shape: WidgetStatePropertyAll(_buttonShape),
-      textStyle: const WidgetStatePropertyAll(
-        TextStyle(
-          fontFamily: 'Nunito',
-          fontWeight: FontWeight.w500,
-          fontSize: 15,
-        ),
-      ),
-    ),
-  );
+      );
 }

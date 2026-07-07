@@ -7,13 +7,13 @@ enum Feeling { bored, stressed, tired, lonely, autopilot, somethingElse }
 
 extension FeelingLabel on Feeling {
   String get label => switch (this) {
-    Feeling.bored => 'Bored',
-    Feeling.stressed => 'Stressed',
-    Feeling.tired => 'Tired',
-    Feeling.lonely => 'Lonely',
-    Feeling.autopilot => 'Autopilot',
-    Feeling.somethingElse => 'Something else',
-  };
+        Feeling.bored => 'Bored',
+        Feeling.stressed => 'Stressed',
+        Feeling.tired => 'Tired',
+        Feeling.lonely => 'Lonely',
+        Feeling.autopilot => 'Autopilot',
+        Feeling.somethingElse => 'Something else',
+      };
 }
 
 enum UrgeOutcome { passed, notYet }

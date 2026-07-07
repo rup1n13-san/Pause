@@ -18,7 +18,18 @@ class UrgeEvents extends Table {
   BoolColumn get withinInvitationWindow => boolean().nullable()();
 }
 
-@DriftDatabase(tables: [UrgeEvents])
+/// Hourly aggregated usage stats.
+class UsageBuckets extends Table {
+  IntColumn get day => integer()();
+  IntColumn get hour => integer()();
+  IntColumn get screenMinutes => integer()();
+  IntColumn get unlocks => integer()();
+
+  @override
+  Set<Column> get primaryKey => {day, hour};
+}
+
+@DriftDatabase(tables: [UrgeEvents, UsageBuckets])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -26,7 +37,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -37,6 +48,9 @@ class AppDatabase extends _$AppDatabase {
       onUpgrade: (Migrator m, int from, int to) async {
         if (from < 2) {
           await m.addColumn(urgeEvents, urgeEvents.withinInvitationWindow);
+        }
+        if (from < 3) {
+          await m.createTable(usageBuckets);
         }
       },
     );
@@ -53,8 +67,9 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<List<UrgeEvent>> getAllEvents() => (select(
-    urgeEvents,
-  )..orderBy([(t) => OrderingTerm.desc(t.createdAt)])).get();
+        urgeEvents,
+      )..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
+          .get();
 }
 
 LazyDatabase _openConnection() {

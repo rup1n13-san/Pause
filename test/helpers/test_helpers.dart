@@ -5,6 +5,7 @@ import 'package:mobile/core/services/database_service.dart';
 import 'package:mobile/core/services/settings_service.dart';
 import 'package:mobile/core/services/invitation_service.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:mobile/core/services/usage_stats_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -18,7 +19,8 @@ import 'test_helpers.mocks.dart';
     MockSpec<DatabaseService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<SettingsService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<InvitationService>(onMissingStub: OnMissingStub.returnDefault),
-    // @stacked-mock-spec
+    MockSpec<UsageStatsService>(onMissingStub: OnMissingStub.returnDefault),
+// @stacked-mock-spec
   ],
 )
 void registerServices() {
@@ -28,7 +30,8 @@ void registerServices() {
   getAndRegisterDatabaseService();
   getAndRegisterSettingsService();
   getAndRegisterInvitationService();
-  // @stacked-mock-register
+  getAndRegisterUsageStatsService();
+// @stacked-mock-register
 }
 
 MockDatabaseService getAndRegisterDatabaseService() {
@@ -92,6 +95,12 @@ MockDialogService getAndRegisterDialogService() {
   return service;
 }
 
+MockUsageStatsService getAndRegisterUsageStatsService() {
+  _removeRegistrationIfExists<UsageStatsService>();
+  final service = MockUsageStatsService();
+  locator.registerSingleton<UsageStatsService>(service);
+  return service;
+}
 // @stacked-mock-create
 
 MockSettingsService getAndRegisterSettingsService() {
