@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/ui/common/app_colors.dart';
+import 'package:mobile/core/theme/app_theme.dart';
 import 'package:mobile/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -13,10 +13,10 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
   final Function(DialogResponse) completer;
 
   const InfoAlertDialog({
-    Key? key,
+    super.key,
     required this.request,
     required this.completer,
-  }) : super(key: key);
+  });
 
   @override
   Widget builder(
@@ -24,9 +24,17 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
     InfoAlertDialogModel viewModel,
     Widget? child,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? PauseColors.panel : PauseColors.lightPanel;
+    final text = isDark ? PauseColors.text : PauseColors.lightText;
+    final muted = isDark ? PauseColors.muted : PauseColors.lightMuted;
+    final amber = isDark ? PauseColors.amber : PauseColors.lightAmber;
+    final orbA = isDark ? PauseColors.orbA : PauseColors.lightOrbA;
+    final onAmber = PauseColors.onAmber;
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: Colors.white,
+      backgroundColor: bg,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
@@ -42,17 +50,18 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
                     children: [
                       Text(
                         request.title!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
+                          color: text,
                         ),
                       ),
                       verticalSpaceTiny,
                       Text(
                         request.description!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: kcMediumGrey,
+                          color: muted,
                         ),
                         maxLines: 3,
                         softWrap: true,
@@ -63,8 +72,8 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
                 Container(
                   width: _graphicSize,
                   height: _graphicSize,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF6E7B0),
+                  decoration: BoxDecoration(
+                    color: orbA,
                     borderRadius: BorderRadius.all(
                       Radius.circular(_graphicSize / 2),
                     ),
@@ -82,13 +91,13 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: amber,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
+                child: Text(
                   'Got it',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: onAmber,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),

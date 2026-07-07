@@ -1,6 +1,8 @@
 /// Domain enums for the Pause ritual. The UI never names the specific habit —
 /// these describe the feeling underneath and the outcome of a run.
 
+library;
+
 enum Feeling { bored, stressed, tired, lonely, autopilot, somethingElse }
 
 extension FeelingLabel on Feeling {
