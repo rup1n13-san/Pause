@@ -1,4 +1,5 @@
 import 'package:mobile/core/services/database_service.dart';
+import 'package:mobile/core/services/invitation_service.dart';
 import 'package:mobile/core/services/ritual_session_service.dart';
 import 'package:mobile/core/services/settings_service.dart';
 import 'package:mobile/features/breath/breath_view.dart';
@@ -34,6 +35,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: DatabaseService),
     LazySingleton(classType: SettingsService),
     LazySingleton(classType: RitualSessionService),
+    LazySingleton(classType: InvitationService),
     // @stacked-service
   ],
   bottomsheets: [

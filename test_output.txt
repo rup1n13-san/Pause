@@ -1,0 +1,83 @@
+00:00 +0: loading /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart
+00:00 +0: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: (setUpAll)
+00:00 +0: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -1: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -1: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - is null before an outcome is chosen [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/resolution_viewmodel_test.dart 18:15                            main.<fn>.<fn>
+  
+00:00 +0 -2: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -2: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - resolveYes populates eventCount from the database [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/resolution_viewmodel_test.dart 18:15                            main.<fn>.<fn>
+  
+00:00 +0 -3: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -3: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - resolveNotYet also populates eventCount [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/resolution_viewmodel_test.dart 18:15                            main.<fn>.<fn>
+  
+00:00 +0 -4: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -4: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - repCountLabel is singular at exactly one rep [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/resolution_viewmodel_test.dart 18:15                            main.<fn>.<fn>
+  
+00:00 +0 -5: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: MainApp boots without DI errors
+00:00 +0 -5: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - repCountLabel is plural above one rep [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/resolution_viewmodel_test.dart 18:15                            main.<fn>.<fn>
+  
+00:01 +1 -5: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/widget_test.dart: (tearDownAll)
+00:01 +1 -5: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/home_viewmodel_test.dart: HomeViewModel - beginFlow clears any leftover state from a previous run
+00:01 +1 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/home_viewmodel_test.dart: HomeViewModel - beginFlow clears any leftover state from a previous run [E]
+  Invalid argument(s): Type RitualSessionService is already registered inside GetIt. 
+  package:get_it/get_it_impl.dart 14:19                                           throwIfNot
+  package:get_it/get_it_impl.dart 1903:11                                         _GetItImplementation._register
+  package:get_it/get_it_impl.dart 1142:5                                          _GetItImplementation.registerSingleton
+  package:stacked_shared/src/code_generation/locator/stacked_locator.dart 211:15  StackedLocator.registerSingleton
+  test/viewmodels/home_viewmodel_test.dart 18:15                                  main.<fn>.<fn>
+  
+00:02 +1 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - runs Settle in → 3 cycles → Softly done in order
+00:02 +2 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - has exactly 3 breath cycles
+00:02 +3 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - phase durations match the 4-7-8 spec
+00:02 +4 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - settle and done have the spec scales and durations
+00:02 +5 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - a Hold does not move the orb (zero-length animation)
+00:02 +6 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel phase sequence - total duration sits inside the 60–90s product window
+00:02 +7 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel countdown badge - is null during Settle in, then counts each active phase down to 1
+00:02 +8 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/breath_viewmodel_test.dart: BreathViewModel countdown badge - is null again once Softly done is reached
+00:02 +9 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights below the threshold hides insights but still counts
+00:02 +10 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights reaching the threshold surfaces insights
+00:02 +11 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights top feeling is the most frequent charted feeling
+00:02 +12 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights "Something else" counts toward the total but is never charted
+00:02 +13 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights the peak bucket drives the line and banner word
+00:02 +14 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights week count and banner reflect only the last seven days
+00:03 +15 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/models/progress_insights_test.dart: ProgressInsights 14-day cells mark days with events, oldest first
+00:03 +16 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/data/app_database_test.dart: AppDatabase write path - a completed run writes one well-formed event row
+00:03 +17 -6: /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/data/app_database_test.dart: AppDatabase write path - substitute is nullable (run can end without one)
+00:03 +18 -6: Some tests failed.
+
+Failing tests:
+  /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/home_viewmodel_test.dart: HomeViewModel - beginFlow clears any leftover state from a previous run
+  /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - is null before an outcome is chosen
+  /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - repCountLabel is plural above one rep
+  /home/rup1n13/Documents/all-projects/rup1n13-san-projects/PauseApp/mobile/test/viewmodels/resolution_viewmodel_test.dart: ResolutionViewModel eventCount - repCountLabel is singular at exactly one rep
+  ... and 2 more

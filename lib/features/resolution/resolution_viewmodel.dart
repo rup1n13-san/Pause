@@ -2,6 +2,7 @@ import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/app/app.router.dart';
 import 'package:mobile/core/models/pause_enums.dart';
 import 'package:mobile/core/services/database_service.dart';
+import 'package:mobile/core/services/invitation_service.dart';
 import 'package:mobile/core/services/ritual_session_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -12,6 +13,7 @@ class ResolutionViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _databaseService = locator<DatabaseService>();
   final _session = locator<RitualSessionService>();
+  final _invitationService = locator<InvitationService>();
 
   ResolutionStage stage = ResolutionStage.ask;
   bool _recorded = false;
@@ -38,7 +40,9 @@ class ResolutionViewModel extends BaseViewModel {
         feeling: _session.feeling ?? Feeling.autopilot,
         substitute: _session.substitute,
         outcome: outcome,
+        withinInvitationWindow: _invitationService.isWithinInvitationWindow,
       );
+      await _invitationService.syncSchedule();
     }
   }
 
