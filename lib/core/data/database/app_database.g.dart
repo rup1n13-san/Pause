@@ -360,15 +360,289 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
   }
 }
 
+class $UsageBucketsTable extends UsageBuckets
+    with TableInfo<$UsageBucketsTable, UsageBucket> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UsageBucketsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
+  @override
+  late final GeneratedColumn<int> day = GeneratedColumn<int>(
+      'day', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _hourMeta = const VerificationMeta('hour');
+  @override
+  late final GeneratedColumn<int> hour = GeneratedColumn<int>(
+      'hour', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _screenMinutesMeta =
+      const VerificationMeta('screenMinutes');
+  @override
+  late final GeneratedColumn<int> screenMinutes = GeneratedColumn<int>(
+      'screen_minutes', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _unlocksMeta =
+      const VerificationMeta('unlocks');
+  @override
+  late final GeneratedColumn<int> unlocks = GeneratedColumn<int>(
+      'unlocks', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [day, hour, screenMinutes, unlocks];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'usage_buckets';
+  @override
+  VerificationContext validateIntegrity(Insertable<UsageBucket> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('day')) {
+      context.handle(
+          _dayMeta, day.isAcceptableOrUnknown(data['day']!, _dayMeta));
+    } else if (isInserting) {
+      context.missing(_dayMeta);
+    }
+    if (data.containsKey('hour')) {
+      context.handle(
+          _hourMeta, hour.isAcceptableOrUnknown(data['hour']!, _hourMeta));
+    } else if (isInserting) {
+      context.missing(_hourMeta);
+    }
+    if (data.containsKey('screen_minutes')) {
+      context.handle(
+          _screenMinutesMeta,
+          screenMinutes.isAcceptableOrUnknown(
+              data['screen_minutes']!, _screenMinutesMeta));
+    } else if (isInserting) {
+      context.missing(_screenMinutesMeta);
+    }
+    if (data.containsKey('unlocks')) {
+      context.handle(_unlocksMeta,
+          unlocks.isAcceptableOrUnknown(data['unlocks']!, _unlocksMeta));
+    } else if (isInserting) {
+      context.missing(_unlocksMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {day, hour};
+  @override
+  UsageBucket map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UsageBucket(
+      day: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}day'])!,
+      hour: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hour'])!,
+      screenMinutes: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}screen_minutes'])!,
+      unlocks: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}unlocks'])!,
+    );
+  }
+
+  @override
+  $UsageBucketsTable createAlias(String alias) {
+    return $UsageBucketsTable(attachedDatabase, alias);
+  }
+}
+
+class UsageBucket extends DataClass implements Insertable<UsageBucket> {
+  final int day;
+  final int hour;
+  final int screenMinutes;
+  final int unlocks;
+  const UsageBucket(
+      {required this.day,
+      required this.hour,
+      required this.screenMinutes,
+      required this.unlocks});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['day'] = Variable<int>(day);
+    map['hour'] = Variable<int>(hour);
+    map['screen_minutes'] = Variable<int>(screenMinutes);
+    map['unlocks'] = Variable<int>(unlocks);
+    return map;
+  }
+
+  UsageBucketsCompanion toCompanion(bool nullToAbsent) {
+    return UsageBucketsCompanion(
+      day: Value(day),
+      hour: Value(hour),
+      screenMinutes: Value(screenMinutes),
+      unlocks: Value(unlocks),
+    );
+  }
+
+  factory UsageBucket.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UsageBucket(
+      day: serializer.fromJson<int>(json['day']),
+      hour: serializer.fromJson<int>(json['hour']),
+      screenMinutes: serializer.fromJson<int>(json['screenMinutes']),
+      unlocks: serializer.fromJson<int>(json['unlocks']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'day': serializer.toJson<int>(day),
+      'hour': serializer.toJson<int>(hour),
+      'screenMinutes': serializer.toJson<int>(screenMinutes),
+      'unlocks': serializer.toJson<int>(unlocks),
+    };
+  }
+
+  UsageBucket copyWith(
+          {int? day, int? hour, int? screenMinutes, int? unlocks}) =>
+      UsageBucket(
+        day: day ?? this.day,
+        hour: hour ?? this.hour,
+        screenMinutes: screenMinutes ?? this.screenMinutes,
+        unlocks: unlocks ?? this.unlocks,
+      );
+  UsageBucket copyWithCompanion(UsageBucketsCompanion data) {
+    return UsageBucket(
+      day: data.day.present ? data.day.value : this.day,
+      hour: data.hour.present ? data.hour.value : this.hour,
+      screenMinutes: data.screenMinutes.present
+          ? data.screenMinutes.value
+          : this.screenMinutes,
+      unlocks: data.unlocks.present ? data.unlocks.value : this.unlocks,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UsageBucket(')
+          ..write('day: $day, ')
+          ..write('hour: $hour, ')
+          ..write('screenMinutes: $screenMinutes, ')
+          ..write('unlocks: $unlocks')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(day, hour, screenMinutes, unlocks);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UsageBucket &&
+          other.day == this.day &&
+          other.hour == this.hour &&
+          other.screenMinutes == this.screenMinutes &&
+          other.unlocks == this.unlocks);
+}
+
+class UsageBucketsCompanion extends UpdateCompanion<UsageBucket> {
+  final Value<int> day;
+  final Value<int> hour;
+  final Value<int> screenMinutes;
+  final Value<int> unlocks;
+  final Value<int> rowid;
+  const UsageBucketsCompanion({
+    this.day = const Value.absent(),
+    this.hour = const Value.absent(),
+    this.screenMinutes = const Value.absent(),
+    this.unlocks = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UsageBucketsCompanion.insert({
+    required int day,
+    required int hour,
+    required int screenMinutes,
+    required int unlocks,
+    this.rowid = const Value.absent(),
+  })  : day = Value(day),
+        hour = Value(hour),
+        screenMinutes = Value(screenMinutes),
+        unlocks = Value(unlocks);
+  static Insertable<UsageBucket> custom({
+    Expression<int>? day,
+    Expression<int>? hour,
+    Expression<int>? screenMinutes,
+    Expression<int>? unlocks,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (day != null) 'day': day,
+      if (hour != null) 'hour': hour,
+      if (screenMinutes != null) 'screen_minutes': screenMinutes,
+      if (unlocks != null) 'unlocks': unlocks,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UsageBucketsCompanion copyWith(
+      {Value<int>? day,
+      Value<int>? hour,
+      Value<int>? screenMinutes,
+      Value<int>? unlocks,
+      Value<int>? rowid}) {
+    return UsageBucketsCompanion(
+      day: day ?? this.day,
+      hour: hour ?? this.hour,
+      screenMinutes: screenMinutes ?? this.screenMinutes,
+      unlocks: unlocks ?? this.unlocks,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (day.present) {
+      map['day'] = Variable<int>(day.value);
+    }
+    if (hour.present) {
+      map['hour'] = Variable<int>(hour.value);
+    }
+    if (screenMinutes.present) {
+      map['screen_minutes'] = Variable<int>(screenMinutes.value);
+    }
+    if (unlocks.present) {
+      map['unlocks'] = Variable<int>(unlocks.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UsageBucketsCompanion(')
+          ..write('day: $day, ')
+          ..write('hour: $hour, ')
+          ..write('screenMinutes: $screenMinutes, ')
+          ..write('unlocks: $unlocks, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UrgeEventsTable urgeEvents = $UrgeEventsTable(this);
+  late final $UsageBucketsTable usageBuckets = $UsageBucketsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [urgeEvents];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [urgeEvents, usageBuckets];
 }
 
 typedef $$UrgeEventsTableCreateCompanionBuilder = UrgeEventsCompanion Function({
@@ -547,10 +821,171 @@ typedef $$UrgeEventsTableProcessedTableManager = ProcessedTableManager<
     (UrgeEvent, BaseReferences<_$AppDatabase, $UrgeEventsTable, UrgeEvent>),
     UrgeEvent,
     PrefetchHooks Function()>;
+typedef $$UsageBucketsTableCreateCompanionBuilder = UsageBucketsCompanion
+    Function({
+  required int day,
+  required int hour,
+  required int screenMinutes,
+  required int unlocks,
+  Value<int> rowid,
+});
+typedef $$UsageBucketsTableUpdateCompanionBuilder = UsageBucketsCompanion
+    Function({
+  Value<int> day,
+  Value<int> hour,
+  Value<int> screenMinutes,
+  Value<int> unlocks,
+  Value<int> rowid,
+});
+
+class $$UsageBucketsTableFilterComposer
+    extends Composer<_$AppDatabase, $UsageBucketsTable> {
+  $$UsageBucketsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get day => $composableBuilder(
+      column: $table.day, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get hour => $composableBuilder(
+      column: $table.hour, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get screenMinutes => $composableBuilder(
+      column: $table.screenMinutes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get unlocks => $composableBuilder(
+      column: $table.unlocks, builder: (column) => ColumnFilters(column));
+}
+
+class $$UsageBucketsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UsageBucketsTable> {
+  $$UsageBucketsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get day => $composableBuilder(
+      column: $table.day, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get hour => $composableBuilder(
+      column: $table.hour, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get screenMinutes => $composableBuilder(
+      column: $table.screenMinutes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get unlocks => $composableBuilder(
+      column: $table.unlocks, builder: (column) => ColumnOrderings(column));
+}
+
+class $$UsageBucketsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UsageBucketsTable> {
+  $$UsageBucketsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get day =>
+      $composableBuilder(column: $table.day, builder: (column) => column);
+
+  GeneratedColumn<int> get hour =>
+      $composableBuilder(column: $table.hour, builder: (column) => column);
+
+  GeneratedColumn<int> get screenMinutes => $composableBuilder(
+      column: $table.screenMinutes, builder: (column) => column);
+
+  GeneratedColumn<int> get unlocks =>
+      $composableBuilder(column: $table.unlocks, builder: (column) => column);
+}
+
+class $$UsageBucketsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UsageBucketsTable,
+    UsageBucket,
+    $$UsageBucketsTableFilterComposer,
+    $$UsageBucketsTableOrderingComposer,
+    $$UsageBucketsTableAnnotationComposer,
+    $$UsageBucketsTableCreateCompanionBuilder,
+    $$UsageBucketsTableUpdateCompanionBuilder,
+    (
+      UsageBucket,
+      BaseReferences<_$AppDatabase, $UsageBucketsTable, UsageBucket>
+    ),
+    UsageBucket,
+    PrefetchHooks Function()> {
+  $$UsageBucketsTableTableManager(_$AppDatabase db, $UsageBucketsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UsageBucketsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UsageBucketsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UsageBucketsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> day = const Value.absent(),
+            Value<int> hour = const Value.absent(),
+            Value<int> screenMinutes = const Value.absent(),
+            Value<int> unlocks = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UsageBucketsCompanion(
+            day: day,
+            hour: hour,
+            screenMinutes: screenMinutes,
+            unlocks: unlocks,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int day,
+            required int hour,
+            required int screenMinutes,
+            required int unlocks,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UsageBucketsCompanion.insert(
+            day: day,
+            hour: hour,
+            screenMinutes: screenMinutes,
+            unlocks: unlocks,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$UsageBucketsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UsageBucketsTable,
+    UsageBucket,
+    $$UsageBucketsTableFilterComposer,
+    $$UsageBucketsTableOrderingComposer,
+    $$UsageBucketsTableAnnotationComposer,
+    $$UsageBucketsTableCreateCompanionBuilder,
+    $$UsageBucketsTableUpdateCompanionBuilder,
+    (
+      UsageBucket,
+      BaseReferences<_$AppDatabase, $UsageBucketsTable, UsageBucket>
+    ),
+    UsageBucket,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
   $$UrgeEventsTableTableManager get urgeEvents =>
       $$UrgeEventsTableTableManager(_db, _db.urgeEvents);
+  $$UsageBucketsTableTableManager get usageBuckets =>
+      $$UsageBucketsTableTableManager(_db, _db.usageBuckets);
 }

@@ -20,16 +20,20 @@ void main() {
     });
     tearDown(() => locator.reset());
 
-    test('showReofferCard is true when hasInsights, not enabled, and not dismissed', () async {
+    test(
+        'showReofferCard is true when hasInsights, not enabled, and not dismissed',
+        () async {
       when(settings.invitesEnabled).thenReturn(false);
       when(settings.inviteOfferDismissed).thenReturn(false);
-      
-      when(database.allEvents()).thenAnswer((_) async => List.generate(5, (i) => UrgeEvent(
-        id: i,
-        createdAt: DateTime.now(),
-        feeling: Feeling.bored.label,
-        outcome: UrgeOutcome.passed.value,
-      )));
+
+      when(database.allEvents()).thenAnswer((_) async => List.generate(
+          5,
+          (i) => UrgeEvent(
+                id: i,
+                createdAt: DateTime.now(),
+                feeling: Feeling.bored.label,
+                outcome: UrgeOutcome.passed.value,
+              )));
 
       final viewModel = ProgressViewModel();
       await viewModel.load();
@@ -40,13 +44,15 @@ void main() {
     test('showReofferCard is false when invites enabled', () async {
       when(settings.invitesEnabled).thenReturn(true);
       when(settings.inviteOfferDismissed).thenReturn(false);
-      
-      when(database.allEvents()).thenAnswer((_) async => List.generate(5, (i) => UrgeEvent(
-        id: i,
-        createdAt: DateTime.now(),
-        feeling: Feeling.bored.label,
-        outcome: UrgeOutcome.passed.value,
-      )));
+
+      when(database.allEvents()).thenAnswer((_) async => List.generate(
+          5,
+          (i) => UrgeEvent(
+                id: i,
+                createdAt: DateTime.now(),
+                feeling: Feeling.bored.label,
+                outcome: UrgeOutcome.passed.value,
+              )));
 
       final viewModel = ProgressViewModel();
       await viewModel.load();
@@ -57,13 +63,15 @@ void main() {
     test('showReofferCard is false when dismissed', () async {
       when(settings.invitesEnabled).thenReturn(false);
       when(settings.inviteOfferDismissed).thenReturn(true);
-      
-      when(database.allEvents()).thenAnswer((_) async => List.generate(5, (i) => UrgeEvent(
-        id: i,
-        createdAt: DateTime.now(),
-        feeling: Feeling.bored.label,
-        outcome: UrgeOutcome.passed.value,
-      )));
+
+      when(database.allEvents()).thenAnswer((_) async => List.generate(
+          5,
+          (i) => UrgeEvent(
+                id: i,
+                createdAt: DateTime.now(),
+                feeling: Feeling.bored.label,
+                outcome: UrgeOutcome.passed.value,
+              )));
 
       final viewModel = ProgressViewModel();
       await viewModel.load();

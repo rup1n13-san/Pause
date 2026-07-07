@@ -27,4 +27,25 @@ class DatabaseService {
   Future<int> eventCount() => _db.countEvents();
 
   Future<List<UrgeEvent>> allEvents() => _db.getAllEvents();
+
+  Future<void> upsertUsageBuckets(List<UsageBucket> buckets) async {
+    await _db.batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _db.usageBuckets,
+        buckets.map((b) => UsageBucketsCompanion.insert(
+              day: b.day,
+              hour: b.hour,
+              screenMinutes: b.screenMinutes,
+              unlocks: b.unlocks,
+            )),
+      );
+    });
+  }
+
+  Future<List<UsageBucket>> getUsageBucketsSince(DateTime since) {
+    final sinceDay = since.year * 10000 + since.month * 100 + since.day;
+    return (_db.select(_db.usageBuckets)
+          ..where((t) => t.day.isBiggerOrEqualValue(sinceDay)))
+        .get();
+  }
 }

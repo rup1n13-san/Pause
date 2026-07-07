@@ -16,7 +16,7 @@ class OnboardingViewModel extends BaseViewModel {
 
   final noteController = TextEditingController();
   final Set<String> _selected = {};
-  
+
   bool _invitesEnabled = false;
   bool get invitesEnabled => _invitesEnabled;
 

@@ -6,13 +6,14 @@ UrgeEvent _event({
   required DateTime at,
   String feeling = 'Bored',
   String outcome = 'passed',
-}) => UrgeEvent(
-  id: 0,
-  createdAt: at,
-  feeling: feeling,
-  substitute: null,
-  outcome: outcome,
-);
+}) =>
+    UrgeEvent(
+      id: 0,
+      createdAt: at,
+      feeling: feeling,
+      substitute: null,
+      outcome: outcome,
+    );
 
 void main() {
   final now = DateTime(2026, 7, 3, 20); // an evening
@@ -66,6 +67,25 @@ void main() {
       final insights = ProgressInsights.fromEvents(events, now: now);
       expect(insights.peakWord, 'most often in the evening');
       expect(insights.peakLine, contains('evening'));
+    });
+
+    test('prediction v2 argmax weights late-night usage heavier', () {
+      final events = [
+        _event(at: DateTime(2026, 7, 3, 10)),
+        _event(at: DateTime(2026, 7, 3, 10)),
+        _event(at: DateTime(2026, 7, 3, 23)),
+        _event(at: DateTime(2026, 7, 3, 23)),
+      ];
+
+      final buckets = [
+        const UsageBucket(day: 20260703, hour: 23, screenMinutes: 50, unlocks: 10),
+      ];
+
+      final insights = ProgressInsights.fromEvents(events, usageBuckets: buckets, now: now);
+      
+      // Without usage, 10 AM would win (earlier in the loop).
+      // With usage, 11 PM gets late-night risk multiplier, so 11 PM wins.
+      expect(insights.peakHour, 23);
     });
 
     test('week count and banner reflect only the last seven days', () {

@@ -16,6 +16,7 @@ import '../core/services/database_service.dart';
 import '../core/services/invitation_service.dart';
 import '../core/services/ritual_session_service.dart';
 import '../core/services/settings_service.dart';
+import '../core/services/usage_stats_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -33,4 +34,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => SettingsService());
   locator.registerLazySingleton(() => RitualSessionService());
   locator.registerLazySingleton(() => InvitationService());
+  locator.registerLazySingleton(() => UsageStatsService());
 }

@@ -150,8 +150,7 @@ class BreathViewModel extends BaseViewModel {
   ];
 
   /// Number of full breath cycles in the ritual (fixed — not user-configurable).
-  static int get cycleCount =>
-      phases.where((p) => p.completesCycle).length;
+  static int get cycleCount => phases.where((p) => p.completesCycle).length;
 
   /// Sum of every phase — used by the test to prove we sit in the 60–90s window.
   static Duration get totalDuration => phases.fold(

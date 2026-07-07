@@ -58,9 +58,8 @@ class BreathView extends StackedView<BreathViewModel> {
                       phase.label,
                       style: TextStyle(
                         fontSize: 28,
-                        color: isDark
-                            ? PauseColors.text
-                            : PauseColors.lightText,
+                        color:
+                            isDark ? PauseColors.text : PauseColors.lightText,
                       ),
                     ),
                   ],

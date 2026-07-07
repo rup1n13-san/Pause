@@ -50,7 +50,6 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                 'ever leaves it.',
                 style: PauseTextStyles.body(color: muted, fontSize: 13.5),
               ),
-
               const SizedBox(height: 30),
               Text('What will you reach for instead?', style: sectionHeading),
               const SizedBox(height: 6),
@@ -79,7 +78,6 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                     ),
                 ],
               ),
-
               const SizedBox(height: 30),
               Text('What are you stepping back from?', style: sectionHeading),
               const SizedBox(height: 6),
@@ -96,7 +94,8 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                   fontSize: 14,
                   color: text,
                 ),
-                cursorColor: isDark ? PauseColors.amber : PauseColors.lightAmber,
+                cursorColor:
+                    isDark ? PauseColors.amber : PauseColors.lightAmber,
                 decoration: InputDecoration(
                   hintText: '(optional)',
                   hintStyle: PauseTextStyles.body(color: faint, fontSize: 14),
@@ -113,7 +112,6 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30),
               Text('Proactive invitations', style: sectionHeading),
               const SizedBox(height: 6),
@@ -133,7 +131,6 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                 value: viewModel.invitesEnabled,
                 onChanged: viewModel.toggleInvites,
               ),
-
               const SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,
@@ -157,9 +154,9 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
   }
 
   static OutlineInputBorder _fieldBorder(Color color) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(12),
-    borderSide: BorderSide(color: color, width: 1),
-  );
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: color, width: 1),
+      );
 
   @override
   void onViewModelReady(OnboardingViewModel viewModel) => viewModel.init();

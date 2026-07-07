@@ -31,9 +31,8 @@ bool _prepareSqlite() {
 }
 
 void main() {
-  final skipReason = _prepareSqlite()
-      ? null
-      : 'libsqlite3 not available on this host';
+  final skipReason =
+      _prepareSqlite() ? null : 'libsqlite3 not available on this host';
 
   group('AppDatabase write path -', () {
     late AppDatabase db;
@@ -71,6 +70,23 @@ void main() {
       final row = (await db.getAllEvents()).single;
       expect(row.substitute, isNull);
       expect(row.outcome, 'not_yet');
+    });
+
+    test('inserting usage buckets works', () async {
+      final buckets = [
+        UsageBucketsCompanion.insert(
+          day: 20260703,
+          hour: 22,
+          screenMinutes: 45,
+          unlocks: 12,
+        ),
+      ];
+      await db.batch((batch) {
+        batch.insertAllOnConflictUpdate(db.usageBuckets, buckets);
+      });
+      final rows = await db.select(db.usageBuckets).get();
+      expect(rows.length, 1);
+      expect(rows.first.screenMinutes, 45);
     });
   }, skip: skipReason);
 }

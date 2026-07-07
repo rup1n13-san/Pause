@@ -4,12 +4,14 @@ import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/core/models/progress_insights.dart';
 import 'package:mobile/core/services/database_service.dart';
 import 'package:mobile/core/services/settings_service.dart';
+import 'package:mobile/core/services/usage_stats_service.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class InvitationService {
   final _db = locator<DatabaseService>();
   final _settings = locator<SettingsService>();
+  final _usage = locator<UsageStatsService>();
   final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 
@@ -44,8 +46,13 @@ class InvitationService {
 
     if (_settings.invitesEnabled != true) return;
 
+    await _usage.syncUsage();
+
     final events = await _db.allEvents();
-    final insights = ProgressInsights.fromEvents(events);
+    final sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
+    final buckets = await _db.getUsageBucketsSince(sevenDaysAgo);
+
+    final insights = ProgressInsights.fromEvents(events, usageBuckets: buckets);
 
     if (!insights.hasInsights) return;
 

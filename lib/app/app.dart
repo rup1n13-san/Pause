@@ -14,6 +14,8 @@ import 'package:mobile/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:mobile/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:mobile/core/services/usage_stats_service.dart';
+import 'package:mobile/features/usage_opt_in/usage_opt_in_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -26,7 +28,8 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: OfframpView),
     MaterialRoute(page: ResolutionView),
     MaterialRoute(page: ProgressView),
-    // @stacked-route
+    MaterialRoute(page: UsageOptInView),
+// @stacked-route
   ],
   dependencies: [
     LazySingleton(classType: BottomSheetService),
@@ -36,7 +39,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: SettingsService),
     LazySingleton(classType: RitualSessionService),
     LazySingleton(classType: InvitationService),
-    // @stacked-service
+    LazySingleton(classType: UsageStatsService),
+// @stacked-service
   ],
   bottomsheets: [
     StackedBottomsheet(classType: NoticeSheet),

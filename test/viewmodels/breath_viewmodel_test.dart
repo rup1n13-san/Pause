@@ -37,17 +37,16 @@ void main() {
     });
 
     test('phase durations match the 4-7-8 spec', () {
-      final ins =
-          phases.where((p) => p.type == BreathPhaseType.breatheIn);
+      final ins = phases.where((p) => p.type == BreathPhaseType.breatheIn);
       final holds = phases.where((p) => p.type == BreathPhaseType.hold);
-      final outs =
-          phases.where((p) => p.type == BreathPhaseType.breatheOut);
+      final outs = phases.where((p) => p.type == BreathPhaseType.breatheOut);
 
-      expect(ins.every((p) => p.duration == const Duration(seconds: 4)), isTrue);
-      expect(holds.every((p) => p.duration == const Duration(seconds: 7)),
-          isTrue);
-      expect(outs.every((p) => p.duration == const Duration(seconds: 8)),
-          isTrue);
+      expect(
+          ins.every((p) => p.duration == const Duration(seconds: 4)), isTrue);
+      expect(
+          holds.every((p) => p.duration == const Duration(seconds: 7)), isTrue);
+      expect(
+          outs.every((p) => p.duration == const Duration(seconds: 8)), isTrue);
     });
 
     test('settle and done have the spec scales and durations', () {
@@ -64,8 +63,7 @@ void main() {
     });
 
     test('a Hold does not move the orb (zero-length animation)', () {
-      for (final hold
-          in phases.where((p) => p.type == BreathPhaseType.hold)) {
+      for (final hold in phases.where((p) => p.type == BreathPhaseType.hold)) {
         expect(hold.animationDuration, Duration.zero);
         expect(hold.targetScale, 1.0);
       }
