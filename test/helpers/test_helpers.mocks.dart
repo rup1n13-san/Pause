@@ -10,6 +10,8 @@ import 'package:flutter/material.dart' as _i4;
 import 'package:mobile/core/data/database/app_database.dart' as _i9;
 import 'package:mobile/core/models/pause_enums.dart' as _i8;
 import 'package:mobile/core/services/database_service.dart' as _i7;
+import 'package:mobile/core/services/invitation_service.dart' as _i11;
+import 'package:mobile/core/services/settings_service.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i3;
 import 'package:stacked_services/stacked_services.dart' as _i2;
@@ -697,6 +699,7 @@ class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
     required _i8.Feeling? feeling,
     String? substitute,
     required _i8.UrgeOutcome? outcome,
+    bool? withinInvitationWindow,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -706,6 +709,7 @@ class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
             #feeling: feeling,
             #substitute: substitute,
             #outcome: outcome,
+            #withinInvitationWindow: withinInvitationWindow,
           },
         ),
         returnValue: _i5.Future<int>.value(0),
@@ -732,4 +736,143 @@ class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
         returnValueForMissingStub:
             _i5.Future<List<_i9.UrgeEvent>>.value(<_i9.UrgeEvent>[]),
       ) as _i5.Future<List<_i9.UrgeEvent>>);
+}
+
+/// A class which mocks [SettingsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSettingsService extends _i1.Mock implements _i10.SettingsService {
+  @override
+  bool get setupComplete => (super.noSuchMethod(
+        Invocation.getter(#setupComplete),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  List<String> get substitutes => (super.noSuchMethod(
+        Invocation.getter(#substitutes),
+        returnValue: <String>[],
+        returnValueForMissingStub: <String>[],
+      ) as List<String>);
+
+  @override
+  String get habitNote => (super.noSuchMethod(
+        Invocation.getter(#habitNote),
+        returnValue: _i3.dummyValue<String>(
+          this,
+          Invocation.getter(#habitNote),
+        ),
+        returnValueForMissingStub: _i3.dummyValue<String>(
+          this,
+          Invocation.getter(#habitNote),
+        ),
+      ) as String);
+
+  @override
+  bool get inviteOfferDismissed => (super.noSuchMethod(
+        Invocation.getter(#inviteOfferDismissed),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i5.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> completeSetup({
+    required List<String>? substitutes,
+    String? note,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #completeSetup,
+          [],
+          {
+            #substitutes: substitutes,
+            #note: note,
+          },
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> resetSetup() => (super.noSuchMethod(
+        Invocation.method(
+          #resetSetup,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setInvitesEnabled(bool? value) => (super.noSuchMethod(
+        Invocation.method(
+          #setInvitesEnabled,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setInviteOfferDismissed(bool? value) => (super.noSuchMethod(
+        Invocation.method(
+          #setInviteOfferDismissed,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setLastInvitationFiredAt(int? value) => (super.noSuchMethod(
+        Invocation.method(
+          #setLastInvitationFiredAt,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+}
+
+/// A class which mocks [InvitationService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInvitationService extends _i1.Mock implements _i11.InvitationService {
+  @override
+  bool get isWithinInvitationWindow => (super.noSuchMethod(
+        Invocation.getter(#isWithinInvitationWindow),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i5.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> syncSchedule() => (super.noSuchMethod(
+        Invocation.method(
+          #syncSchedule,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/app/app.router.dart';
+import 'package:mobile/core/services/invitation_service.dart';
 import 'package:mobile/core/services/settings_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -10,9 +12,13 @@ import 'package:stacked_services/stacked_services.dart';
 class OnboardingViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _settingsService = locator<SettingsService>();
+  final _invitationService = locator<InvitationService>();
 
   final noteController = TextEditingController();
   final Set<String> _selected = {};
+  
+  bool _invitesEnabled = false;
+  bool get invitesEnabled => _invitesEnabled;
 
   /// Captured once, before we persist anything, so it reflects how the screen
   /// was entered.
@@ -26,6 +32,20 @@ class OnboardingViewModel extends BaseViewModel {
       ..clear()
       ..addAll(_settingsService.substitutes);
     noteController.text = _settingsService.habitNote;
+    _invitesEnabled = _settingsService.invitesEnabled ?? false;
+    rebuildUi();
+  }
+
+  Future<void> toggleInvites(bool value) async {
+    if (value) {
+      final plugin = FlutterLocalNotificationsPlugin()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      final granted = await plugin?.requestNotificationsPermission();
+      _invitesEnabled = granted ?? false;
+    } else {
+      _invitesEnabled = false;
+    }
     rebuildUi();
   }
 
@@ -44,6 +64,8 @@ class OnboardingViewModel extends BaseViewModel {
       substitutes: substitutes,
       note: noteController.text.trim(),
     );
+    await _settingsService.setInvitesEnabled(_invitesEnabled);
+    await _invitationService.syncSchedule();
 
     if (isEditing) {
       _navigationService.back();

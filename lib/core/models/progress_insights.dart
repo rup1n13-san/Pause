@@ -25,6 +25,7 @@ class ProgressInsights {
     required this.feelingBars,
     required this.peakLine,
     required this.peakWord,
+    required this.peakHour,
     required this.hourDensity,
     required this.dayCells,
     required this.weekCount,
@@ -51,6 +52,7 @@ class ProgressInsights {
   final List<FeelingBar> feelingBars;
   final String peakLine;
   final String peakWord;
+  final int peakHour;
   final List<double> hourDensity; // 24 values, each 0..1
   final List<bool> dayCells; // 14 days, oldest first
   final int weekCount;
@@ -118,6 +120,15 @@ class ProgressInsights {
     final hMax = [1, ...hCount].reduce((a, b) => a > b ? a : b);
     final hourDensity = hCount.map((c) => c / hMax).toList();
 
+    var peakHour = 0;
+    var peakHourCount = -1;
+    for (var i = 0; i < 24; i++) {
+      if (hCount[i] > peakHourCount) {
+        peakHourCount = hCount[i];
+        peakHour = i;
+      }
+    }
+
     // Last 14 days, oldest first.
     final dayCells = List.generate(
       14,
@@ -133,6 +144,7 @@ class ProgressInsights {
       feelingBars: feelingBars,
       peakLine: peak.line,
       peakWord: peak.word,
+      peakHour: peakHour,
       hourDensity: hourDensity,
       dayCells: dayCells,
       weekCount: weekCount,

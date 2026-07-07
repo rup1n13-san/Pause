@@ -42,9 +42,18 @@ class $UrgeEventsTable extends UrgeEvents
   late final GeneratedColumn<String> outcome = GeneratedColumn<String>(
       'outcome', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _withinInvitationWindowMeta =
+      const VerificationMeta('withinInvitationWindow');
+  @override
+  late final GeneratedColumn<bool> withinInvitationWindow =
+      GeneratedColumn<bool>('within_invitation_window', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("within_invitation_window" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, createdAt, feeling, substitute, outcome];
+      [id, createdAt, feeling, substitute, outcome, withinInvitationWindow];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -82,6 +91,12 @@ class $UrgeEventsTable extends UrgeEvents
     } else if (isInserting) {
       context.missing(_outcomeMeta);
     }
+    if (data.containsKey('within_invitation_window')) {
+      context.handle(
+          _withinInvitationWindowMeta,
+          withinInvitationWindow.isAcceptableOrUnknown(
+              data['within_invitation_window']!, _withinInvitationWindowMeta));
+    }
     return context;
   }
 
@@ -101,6 +116,9 @@ class $UrgeEventsTable extends UrgeEvents
           .read(DriftSqlType.string, data['${effectivePrefix}substitute']),
       outcome: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}outcome'])!,
+      withinInvitationWindow: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}within_invitation_window']),
     );
   }
 
@@ -116,12 +134,14 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
   final String feeling;
   final String? substitute;
   final String outcome;
+  final bool? withinInvitationWindow;
   const UrgeEvent(
       {required this.id,
       required this.createdAt,
       required this.feeling,
       this.substitute,
-      required this.outcome});
+      required this.outcome,
+      this.withinInvitationWindow});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -132,6 +152,9 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
       map['substitute'] = Variable<String>(substitute);
     }
     map['outcome'] = Variable<String>(outcome);
+    if (!nullToAbsent || withinInvitationWindow != null) {
+      map['within_invitation_window'] = Variable<bool>(withinInvitationWindow);
+    }
     return map;
   }
 
@@ -144,6 +167,9 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
           ? const Value.absent()
           : Value(substitute),
       outcome: Value(outcome),
+      withinInvitationWindow: withinInvitationWindow == null && nullToAbsent
+          ? const Value.absent()
+          : Value(withinInvitationWindow),
     );
   }
 
@@ -156,6 +182,8 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
       feeling: serializer.fromJson<String>(json['feeling']),
       substitute: serializer.fromJson<String?>(json['substitute']),
       outcome: serializer.fromJson<String>(json['outcome']),
+      withinInvitationWindow:
+          serializer.fromJson<bool?>(json['withinInvitationWindow']),
     );
   }
   @override
@@ -167,6 +195,8 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
       'feeling': serializer.toJson<String>(feeling),
       'substitute': serializer.toJson<String?>(substitute),
       'outcome': serializer.toJson<String>(outcome),
+      'withinInvitationWindow':
+          serializer.toJson<bool?>(withinInvitationWindow),
     };
   }
 
@@ -175,13 +205,17 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
           DateTime? createdAt,
           String? feeling,
           Value<String?> substitute = const Value.absent(),
-          String? outcome}) =>
+          String? outcome,
+          Value<bool?> withinInvitationWindow = const Value.absent()}) =>
       UrgeEvent(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         feeling: feeling ?? this.feeling,
         substitute: substitute.present ? substitute.value : this.substitute,
         outcome: outcome ?? this.outcome,
+        withinInvitationWindow: withinInvitationWindow.present
+            ? withinInvitationWindow.value
+            : this.withinInvitationWindow,
       );
   UrgeEvent copyWithCompanion(UrgeEventsCompanion data) {
     return UrgeEvent(
@@ -191,6 +225,9 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
       substitute:
           data.substitute.present ? data.substitute.value : this.substitute,
       outcome: data.outcome.present ? data.outcome.value : this.outcome,
+      withinInvitationWindow: data.withinInvitationWindow.present
+          ? data.withinInvitationWindow.value
+          : this.withinInvitationWindow,
     );
   }
 
@@ -201,13 +238,15 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
           ..write('createdAt: $createdAt, ')
           ..write('feeling: $feeling, ')
           ..write('substitute: $substitute, ')
-          ..write('outcome: $outcome')
+          ..write('outcome: $outcome, ')
+          ..write('withinInvitationWindow: $withinInvitationWindow')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, feeling, substitute, outcome);
+  int get hashCode => Object.hash(
+      id, createdAt, feeling, substitute, outcome, withinInvitationWindow);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -216,7 +255,8 @@ class UrgeEvent extends DataClass implements Insertable<UrgeEvent> {
           other.createdAt == this.createdAt &&
           other.feeling == this.feeling &&
           other.substitute == this.substitute &&
-          other.outcome == this.outcome);
+          other.outcome == this.outcome &&
+          other.withinInvitationWindow == this.withinInvitationWindow);
 }
 
 class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
@@ -225,12 +265,14 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
   final Value<String> feeling;
   final Value<String?> substitute;
   final Value<String> outcome;
+  final Value<bool?> withinInvitationWindow;
   const UrgeEventsCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.feeling = const Value.absent(),
     this.substitute = const Value.absent(),
     this.outcome = const Value.absent(),
+    this.withinInvitationWindow = const Value.absent(),
   });
   UrgeEventsCompanion.insert({
     this.id = const Value.absent(),
@@ -238,6 +280,7 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
     required String feeling,
     this.substitute = const Value.absent(),
     required String outcome,
+    this.withinInvitationWindow = const Value.absent(),
   })  : createdAt = Value(createdAt),
         feeling = Value(feeling),
         outcome = Value(outcome);
@@ -247,6 +290,7 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
     Expression<String>? feeling,
     Expression<String>? substitute,
     Expression<String>? outcome,
+    Expression<bool>? withinInvitationWindow,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -254,6 +298,8 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
       if (feeling != null) 'feeling': feeling,
       if (substitute != null) 'substitute': substitute,
       if (outcome != null) 'outcome': outcome,
+      if (withinInvitationWindow != null)
+        'within_invitation_window': withinInvitationWindow,
     });
   }
 
@@ -262,13 +308,16 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
       Value<DateTime>? createdAt,
       Value<String>? feeling,
       Value<String?>? substitute,
-      Value<String>? outcome}) {
+      Value<String>? outcome,
+      Value<bool?>? withinInvitationWindow}) {
     return UrgeEventsCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       feeling: feeling ?? this.feeling,
       substitute: substitute ?? this.substitute,
       outcome: outcome ?? this.outcome,
+      withinInvitationWindow:
+          withinInvitationWindow ?? this.withinInvitationWindow,
     );
   }
 
@@ -290,6 +339,10 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
     if (outcome.present) {
       map['outcome'] = Variable<String>(outcome.value);
     }
+    if (withinInvitationWindow.present) {
+      map['within_invitation_window'] =
+          Variable<bool>(withinInvitationWindow.value);
+    }
     return map;
   }
 
@@ -300,7 +353,8 @@ class UrgeEventsCompanion extends UpdateCompanion<UrgeEvent> {
           ..write('createdAt: $createdAt, ')
           ..write('feeling: $feeling, ')
           ..write('substitute: $substitute, ')
-          ..write('outcome: $outcome')
+          ..write('outcome: $outcome, ')
+          ..write('withinInvitationWindow: $withinInvitationWindow')
           ..write(')'))
         .toString();
   }
@@ -323,6 +377,7 @@ typedef $$UrgeEventsTableCreateCompanionBuilder = UrgeEventsCompanion Function({
   required String feeling,
   Value<String?> substitute,
   required String outcome,
+  Value<bool?> withinInvitationWindow,
 });
 typedef $$UrgeEventsTableUpdateCompanionBuilder = UrgeEventsCompanion Function({
   Value<int> id,
@@ -330,6 +385,7 @@ typedef $$UrgeEventsTableUpdateCompanionBuilder = UrgeEventsCompanion Function({
   Value<String> feeling,
   Value<String?> substitute,
   Value<String> outcome,
+  Value<bool?> withinInvitationWindow,
 });
 
 class $$UrgeEventsTableFilterComposer
@@ -355,6 +411,10 @@ class $$UrgeEventsTableFilterComposer
 
   ColumnFilters<String> get outcome => $composableBuilder(
       column: $table.outcome, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get withinInvitationWindow => $composableBuilder(
+      column: $table.withinInvitationWindow,
+      builder: (column) => ColumnFilters(column));
 }
 
 class $$UrgeEventsTableOrderingComposer
@@ -380,6 +440,10 @@ class $$UrgeEventsTableOrderingComposer
 
   ColumnOrderings<String> get outcome => $composableBuilder(
       column: $table.outcome, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get withinInvitationWindow => $composableBuilder(
+      column: $table.withinInvitationWindow,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UrgeEventsTableAnnotationComposer
@@ -405,6 +469,9 @@ class $$UrgeEventsTableAnnotationComposer
 
   GeneratedColumn<String> get outcome =>
       $composableBuilder(column: $table.outcome, builder: (column) => column);
+
+  GeneratedColumn<bool> get withinInvitationWindow => $composableBuilder(
+      column: $table.withinInvitationWindow, builder: (column) => column);
 }
 
 class $$UrgeEventsTableTableManager extends RootTableManager<
@@ -435,6 +502,7 @@ class $$UrgeEventsTableTableManager extends RootTableManager<
             Value<String> feeling = const Value.absent(),
             Value<String?> substitute = const Value.absent(),
             Value<String> outcome = const Value.absent(),
+            Value<bool?> withinInvitationWindow = const Value.absent(),
           }) =>
               UrgeEventsCompanion(
             id: id,
@@ -442,6 +510,7 @@ class $$UrgeEventsTableTableManager extends RootTableManager<
             feeling: feeling,
             substitute: substitute,
             outcome: outcome,
+            withinInvitationWindow: withinInvitationWindow,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -449,6 +518,7 @@ class $$UrgeEventsTableTableManager extends RootTableManager<
             required String feeling,
             Value<String?> substitute = const Value.absent(),
             required String outcome,
+            Value<bool?> withinInvitationWindow = const Value.absent(),
           }) =>
               UrgeEventsCompanion.insert(
             id: id,
@@ -456,6 +526,7 @@ class $$UrgeEventsTableTableManager extends RootTableManager<
             feeling: feeling,
             substitute: substitute,
             outcome: outcome,
+            withinInvitationWindow: withinInvitationWindow,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

@@ -23,6 +23,7 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
     final faint = isDark ? PauseColors.faint : PauseColors.lightFaint;
     final chip = isDark ? PauseColors.chip : PauseColors.lightChip;
     final line = isDark ? PauseColors.line : PauseColors.lightLine;
+    final amber = isDark ? PauseColors.amber : PauseColors.lightAmber;
 
     final sectionHeading = TextStyle(
       fontFamily: 'Nunito',
@@ -111,6 +112,26 @@ class OnboardingView extends StackedView<OnboardingViewModel> {
                     isDark ? PauseColors.amber : PauseColors.lightAmber,
                   ),
                 ),
+              ),
+
+              const SizedBox(height: 30),
+              Text('Proactive invitations', style: sectionHeading),
+              const SizedBox(height: 6),
+              Text(
+                'Receive a daily nudge when you usually reach for this.',
+                style: PauseTextStyles.body(color: faint, fontSize: 12),
+              ),
+              const SizedBox(height: 4),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  'Enable daily invitation',
+                  style: PauseTextStyles.body(color: text, fontSize: 14),
+                ),
+                activeTrackColor: amber.withAlpha(128),
+                activeThumbColor: amber,
+                value: viewModel.invitesEnabled,
+                onChanged: viewModel.toggleInvites,
               ),
 
               const SizedBox(height: 32),

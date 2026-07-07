@@ -80,6 +80,14 @@ class ProgressView extends StackedView<ProgressViewModel> {
                   card(_timeBlock(insights, metaLabel, text, faint, amber, line)),
                   const SizedBox(height: 14),
                   card(_daysBlock(insights, metaLabel, muted, amber, chip, line)),
+                  if (viewModel.showReofferCard) ...[
+                    const SizedBox(height: 14),
+                    card(_reofferBlock(viewModel, metaLabel, text, muted, amber)),
+                  ],
+                  if (viewModel.invitesEnabled) ...[
+                    const SizedBox(height: 14),
+                    _toggleRow(viewModel, text, amber),
+                  ],
                 ] else ...[
                   const SizedBox(height: 14),
                   card(_emptyBlock(text, muted)),
@@ -299,6 +307,61 @@ class ProgressView extends StackedView<ProgressViewModel> {
       ),
     ],
   );
+
+  Widget _reofferBlock(
+    ProgressViewModel viewModel,
+    Text Function(String) metaLabel,
+    Color text,
+    Color muted,
+    Color amber,
+  ) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      metaLabel('proactive'),
+      const SizedBox(height: 10),
+      Text(
+        'Want a gentle nudge?',
+        style: PauseTextStyles.title(fontSize: 17, color: text),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'We can send an optional invitation to pause when you usually reach for this.',
+        style: PauseTextStyles.body(color: muted, fontSize: 13.5),
+      ),
+      const SizedBox(height: 16),
+      Row(
+        children: [
+          Expanded(
+            child: FilledButton(
+              onPressed: () => viewModel.toggleInvites(true),
+              child: const Text('Enable invitations'),
+            ),
+          ),
+          const SizedBox(width: 12),
+          TextButton(
+            onPressed: viewModel.dismissReoffer,
+            child: Text(
+              'Not now',
+              style: TextStyle(color: muted),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+
+  Widget _toggleRow(ProgressViewModel viewModel, Color text, Color amber) =>
+      SwitchListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(
+          'Daily invitations',
+          style: PauseTextStyles.body(color: text, fontSize: 15),
+        ),
+        activeTrackColor: amber.withAlpha(128),
+        activeThumbColor: amber,
+        value: viewModel.invitesEnabled,
+        onChanged: viewModel.toggleInvites,
+      );
 
   @override
   void onViewModelReady(ProgressViewModel viewModel) => viewModel.load();

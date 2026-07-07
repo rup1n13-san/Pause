@@ -11,6 +11,7 @@ class DatabaseService {
     required Feeling feeling,
     String? substitute,
     required UrgeOutcome outcome,
+    bool? withinInvitationWindow,
   }) {
     return _db.insertEvent(
       UrgeEventsCompanion.insert(
@@ -18,6 +19,7 @@ class DatabaseService {
         feeling: feeling.label,
         substitute: Value(substitute),
         outcome: outcome.value,
+        withinInvitationWindow: Value(withinInvitationWindow),
       ),
     );
   }

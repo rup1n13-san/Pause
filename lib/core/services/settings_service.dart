@@ -6,6 +6,9 @@ class SettingsService {
   static const _kSubs = 'pause_subs';
   static const _kNote = 'pause_note';
   static const _kSetup = 'pause_setup';
+  static const _kInvitesEnabled = 'pause_invites_enabled';
+  static const _kInviteOfferDismissed = 'pause_invite_offer_dismissed';
+  static const _kLastInvitationFiredAt = 'pause_last_invitation_fired_at';
 
   /// Every substitute the setup screen offers as a chip.
   static const presetSubstitutes = <String>[
@@ -53,4 +56,17 @@ class SettingsService {
   }
 
   Future<void> resetSetup() => _prefs.remove(_kSetup);
+
+  bool? get invitesEnabled => _prefs.getBool(_kInvitesEnabled);
+  Future<void> setInvitesEnabled(bool value) =>
+      _prefs.setBool(_kInvitesEnabled, value);
+
+  bool get inviteOfferDismissed =>
+      _prefs.getBool(_kInviteOfferDismissed) ?? false;
+  Future<void> setInviteOfferDismissed(bool value) =>
+      _prefs.setBool(_kInviteOfferDismissed, value);
+
+  int? get lastInvitationFiredAt => _prefs.getInt(_kLastInvitationFiredAt);
+  Future<void> setLastInvitationFiredAt(int value) =>
+      _prefs.setInt(_kLastInvitationFiredAt, value);
 }
