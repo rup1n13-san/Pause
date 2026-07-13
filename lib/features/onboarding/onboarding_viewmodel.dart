@@ -55,22 +55,34 @@ class OnboardingViewModel extends BaseViewModel {
   }
 
   Future<void> finishSetup() async {
-    // Preserve preset order; never persist an empty list (the Off-ramp needs
-    // at least one option).
-    final chosen = presets.where(_selected.contains).toList();
-    final substitutes = chosen.isEmpty ? const ['Walk'] : chosen;
+    try {
+      // Preserve preset order; never persist an empty list (the Off-ramp needs
+      // at least one option).
+      final chosen = presets.where(_selected.contains).toList();
+      final substitutes = chosen.isEmpty ? const ['Walk'] : chosen;
 
-    await _settingsService.completeSetup(
-      substitutes: substitutes,
-      note: noteController.text.trim(),
-    );
-    await _settingsService.setInvitesEnabled(_invitesEnabled);
-    await _invitationService.syncSchedule();
+      await _settingsService.completeSetup(
+        substitutes: substitutes,
+        note: noteController.text.trim(),
+      );
+      await _settingsService.setInvitesEnabled(_invitesEnabled);
+      await _invitationService.syncSchedule();
 
-    if (isEditing) {
-      _navigationService.back();
-    } else {
-      await _navigationService.replaceWithHomeView();
+      if (isEditing) {
+        _navigationService.back();
+      } else {
+        await _navigationService.replaceWithHomeView();
+      }
+    } catch (e) {
+      // Log error rather than freezing UI on unhandled throws
+      debugPrint('Error finishing setup: $e');
+      // If an error occurs (e.g. scheduling notifications fails), ensure we
+      // still proceed so the user isn't hard-locked on this screen.
+      if (isEditing) {
+        _navigationService.back();
+      } else {
+        await _navigationService.replaceWithHomeView();
+      }
     }
   }
 
