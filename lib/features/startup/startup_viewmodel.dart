@@ -1,5 +1,6 @@
 import 'package:mobile/app/app.locator.dart';
 import 'package:mobile/app/app.router.dart';
+import 'package:mobile/core/services/invitation_service.dart';
 import 'package:mobile/core/services/settings_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -7,9 +8,11 @@ import 'package:stacked_services/stacked_services.dart';
 class StartupViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _settingsService = locator<SettingsService>();
+  final _invitationService = locator<InvitationService>();
 
   Future<void> runStartupLogic() async {
     await _settingsService.init();
+    await _invitationService.init();
 
     if (_settingsService.setupComplete) {
       await _navigationService.replaceWithHomeView();
