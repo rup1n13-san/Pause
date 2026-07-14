@@ -42,6 +42,11 @@ class ProgressViewModel extends BaseViewModel {
     rebuildUi();
   }
 
+  Future<void> navigateToAppInterception() async {
+    await _navigationService.navigateToAppInterceptionView();
+    rebuildUi(); // Update UI in case settings changed
+  }
+
   Future<void> toggleInvites(bool value) async {
     if (value) {
       final plugin = FlutterLocalNotificationsPlugin()

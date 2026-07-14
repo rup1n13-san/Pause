@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/core/models/progress_insights.dart';
 import 'package:mobile/core/theme/app_theme.dart';
-import 'package:mobile/core/widgets/pause_text_link.dart';
 import 'package:stacked/stacked.dart';
 
 import 'progress_viewmodel.dart';
 
-/// Progress: a warm, judgment-free read of the local event history — how many
-/// times you've shown up, the feeling underneath, when it tends to hit, and the
-/// last two weeks. Below [ProgressInsights.insightThreshold] events it shows a
-/// gentle "not enough yet" state rather than fabricating a pattern.
 class ProgressView extends StackedView<ProgressViewModel> {
   const ProgressView({super.key});
 
@@ -19,86 +14,80 @@ class ProgressView extends StackedView<ProgressViewModel> {
     ProgressViewModel viewModel,
     Widget? child,
   ) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final text = isDark ? PauseColors.text : PauseColors.lightText;
-    final muted = isDark ? PauseColors.muted : PauseColors.lightMuted;
-    final faint = isDark ? PauseColors.faint : PauseColors.lightFaint;
-    final amber = isDark ? PauseColors.amber : PauseColors.lightAmber;
-    final panel = isDark ? PauseColors.panel : PauseColors.lightPanel;
-    final line = isDark ? PauseColors.line : PauseColors.lightLine;
-    final chip = isDark ? PauseColors.chip : PauseColors.lightChip;
+    final bg = PauseColors.bg;
+    final text = PauseColors.text;
+    final muted = PauseColors.text.withValues(alpha: 0.7);
+    final faint = PauseColors.text.withValues(alpha: 0.4);
+    final amber = PauseColors.amber;
+    final panel = PauseColors.panel;
+    final line = PauseColors.text.withValues(alpha: 0.08);
 
-    Widget card(Widget child) => Container(
-          width: double.infinity,
+    Text metaLabel(String data) => Text(
+          data.toUpperCase(),
+          style: PauseTextStyles.meta(color: faint, fontSize: 11),
+        );
+
+    Widget card(Widget content) => Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: panel,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: line, width: 1),
           ),
-          child: child,
+          child: content,
         );
-
-    Text metaLabel(String label) => Text(
-          label.toUpperCase(),
-          style: PauseTextStyles.meta(
-            color: faint,
-            fontSize: 11,
-          ).copyWith(letterSpacing: 1.1),
-        );
-
-    final insights = viewModel.insights;
 
     return Scaffold(
+      backgroundColor: bg,
+      appBar: AppBar(
+        backgroundColor: bg,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leading: BackButton(color: text, onPressed: viewModel.goHome),
+        title: Text(
+          'Progress',
+          style: PauseTextStyles.title(fontSize: 18, color: text),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(22, 26, 22, 30),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              PauseTextLink(
-                text: '← home',
-                onTap: viewModel.goHome,
-                color: faint,
-                pressedColor: muted,
-                fontSize: 13,
-              ),
-              const SizedBox(height: 18),
-              Text(
-                "What you're noticing",
-                style: PauseTextStyles.title(fontSize: 25, color: text),
-              ),
-              const SizedBox(height: 22),
-              if (insights != null) ...[
-                card(_totalBlock(insights.total, text, muted, faint)),
-                if (insights.hasInsights) ...[
+              if (viewModel.insights == null)
+                const SizedBox() // still loading
+              else ...[
+                if (viewModel.insights!.hasInsights) ...[
+                  _totalBlock(viewModel.insights!.total, text, muted, faint),
+                  const SizedBox(height: 32),
+                  card(_feelingBlock(viewModel.insights!, metaLabel, text, muted, amber, line)),
                   const SizedBox(height: 14),
-                  card(
-                    _feelingBlock(
-                        insights, metaLabel, text, muted, amber, chip),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: card(_timeBlock(viewModel.insights!, metaLabel, text, faint, amber, line))),
+                      const SizedBox(width: 14),
+                      Expanded(child: card(_daysBlock(viewModel.insights!, metaLabel, muted, amber, panel, line))),
+                    ],
                   ),
                   const SizedBox(height: 14),
-                  card(_timeBlock(
-                      insights, metaLabel, text, faint, amber, line)),
+                  if (viewModel.showReofferCard)
+                    card(_reofferBlock(viewModel.insights!, viewModel, metaLabel, text, muted, amber))
+                  else
+                    card(_toggleRow(viewModel, text, amber)),
                   const SizedBox(height: 14),
-                  card(_daysBlock(
-                      insights, metaLabel, muted, amber, chip, line)),
-                  if (viewModel.showReofferCard) ...[
-                    const SizedBox(height: 14),
-                    card(_reofferBlock(
-                        viewModel, metaLabel, text, muted, amber)),
-                  ],
-                  if (viewModel.invitesEnabled) ...[
-                    const SizedBox(height: 14),
-                    _toggleRow(viewModel, text, amber),
-                  ],
                   if (!viewModel.hasUsageAccess) ...[
-                    const SizedBox(height: 14),
                     card(_usageOptInCard(viewModel, text, muted, amber)),
+                    const SizedBox(height: 14),
                   ],
+                  // App Interception integration
+                  card(_appInterceptionCard(viewModel, text, muted, amber)),
                 ] else ...[
                   const SizedBox(height: 14),
                   card(_emptyBlock(text, muted)),
+                  const SizedBox(height: 14),
+                  // App Interception integration
+                  card(_appInterceptionCard(viewModel, text, muted, amber)),
                 ],
               ],
             ],
@@ -319,6 +308,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
       );
 
   Widget _reofferBlock(
+    ProgressInsights insights,
     ProgressViewModel viewModel,
     Text Function(String) metaLabel,
     Color text,
@@ -400,6 +390,38 @@ class ProgressView extends StackedView<ProgressViewModel> {
             const SizedBox(height: 8),
             Text(
               'Predict when you might need a Pause based on your screen rhythm.',
+              style: PauseTextStyles.body(color: muted, fontSize: 13.5),
+            ),
+          ],
+        ),
+      );
+
+  Widget _appInterceptionCard(
+    ProgressViewModel viewModel,
+    Color text,
+    Color muted,
+    Color amber,
+  ) =>
+      InkWell(
+        onTap: viewModel.navigateToAppInterception,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.block, color: amber, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'App Interception',
+                  style: PauseTextStyles.title(fontSize: 16, color: text),
+                ),
+                const Spacer(),
+                Icon(Icons.arrow_forward_ios, color: muted, size: 14),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Get a gentle nudge when you open a distracting app.',
               style: PauseTextStyles.body(color: muted, fontSize: 13.5),
             ),
           ],

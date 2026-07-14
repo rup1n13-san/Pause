@@ -25,6 +25,9 @@ class MainActivity : FlutterActivity() {
                     startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     result.success(null)
                 }
+                "getForegroundApp" -> {
+                    result.success(getForegroundApp())
+                }
                 "queryHourlyScreenBuckets" -> {
                     val startMs = call.argument<Long>("startMs")
                     val endMs = call.argument<Long>("endMs")
@@ -53,6 +56,23 @@ class MainActivity : FlutterActivity() {
             packageName
         )
         return mode == AppOpsManager.MODE_ALLOWED
+    }
+
+    private fun getForegroundApp(): String? {
+        val usm = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val endTime = System.currentTimeMillis()
+        val startTime = endTime - 1000 * 60 // Look back 1 minute to ensure we catch recent events
+        val events = usm.queryEvents(startTime, endTime)
+
+        var currentApp: String? = null
+        val event = UsageEvents.Event()
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event)
+            if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
+                currentApp = event.packageName
+            }
+        }
+        return currentApp
     }
 
     private fun queryHourlyScreenBuckets(startMs: Long, endMs: Long): List<Map<String, Any>> {

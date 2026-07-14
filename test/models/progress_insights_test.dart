@@ -78,11 +78,13 @@ void main() {
       ];
 
       final buckets = [
-        const UsageBucket(day: 20260703, hour: 23, screenMinutes: 50, unlocks: 10),
+        const UsageBucket(
+            day: 20260703, hour: 23, screenMinutes: 50, unlocks: 10),
       ];
 
-      final insights = ProgressInsights.fromEvents(events, usageBuckets: buckets, now: now);
-      
+      final insights =
+          ProgressInsights.fromEvents(events, usageBuckets: buckets, now: now);
+
       // Without usage, 10 AM would win (earlier in the loop).
       // With usage, 11 PM gets late-night risk multiplier, so 11 PM wins.
       expect(insights.peakHour, 23);
