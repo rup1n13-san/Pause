@@ -20,6 +20,12 @@ jobs:
           channel: stable
           flutter-version: 3.44.1
       - run: flutter pub get
+      - name: Patch usage_stats Gradle repositories
+        run: |
+          for gradle_file in "$HOME"/.pub-cache/hosted/pub.dev/usage_stats-*/android/build.gradle; do
+            [ -f "$gradle_file" ] || continue
+            sed -i 's/jcenter()/mavenCentral()/g' "$gradle_file"
+          done
       - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --release
