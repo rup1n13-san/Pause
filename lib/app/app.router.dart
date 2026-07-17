@@ -6,21 +6,25 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/material.dart' as _i15;
 import 'package:flutter/material.dart';
 import 'package:mobile/features/app_interception/app_interception_view.dart'
     as _i11;
 import 'package:mobile/features/breath/breath_view.dart' as _i6;
 import 'package:mobile/features/feeling/feeling_view.dart' as _i5;
 import 'package:mobile/features/home/home_view.dart' as _i4;
+import 'package:mobile/features/main_dashboard/main_dashboard_view.dart'
+    as _i12;
 import 'package:mobile/features/offramp/offramp_view.dart' as _i7;
 import 'package:mobile/features/onboarding/onboarding_view.dart' as _i3;
 import 'package:mobile/features/progress/progress_view.dart' as _i9;
 import 'package:mobile/features/resolution/resolution_view.dart' as _i8;
 import 'package:mobile/features/startup/startup_view.dart' as _i2;
+import 'package:mobile/features/usage/daily_timeline_view.dart' as _i14;
+import 'package:mobile/features/usage/usage_recap_view.dart' as _i13;
 import 'package:mobile/features/usage_opt_in/usage_opt_in_view.dart' as _i10;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i13;
+import 'package:stacked_services/stacked_services.dart' as _i16;
 
 class Routes {
   static const startupView = '/startup-view';
@@ -43,6 +47,12 @@ class Routes {
 
   static const appInterceptionView = '/app-interception-view';
 
+  static const mainDashboardView = '/main-dashboard-view';
+
+  static const usageRecapView = '/usage-recap-view';
+
+  static const dailyTimelineView = '/daily-timeline-view';
+
   static const all = <String>{
     startupView,
     onboardingView,
@@ -54,6 +64,9 @@ class Routes {
     progressView,
     usageOptInView,
     appInterceptionView,
+    mainDashboardView,
+    usageRecapView,
+    dailyTimelineView,
   };
 }
 
@@ -99,6 +112,18 @@ class StackedRouter extends _i1.RouterBase {
       Routes.appInterceptionView,
       page: _i11.AppInterceptionView,
     ),
+    _i1.RouteDef(
+      Routes.mainDashboardView,
+      page: _i12.MainDashboardView,
+    ),
+    _i1.RouteDef(
+      Routes.usageRecapView,
+      page: _i13.UsageRecapView,
+    ),
+    _i1.RouteDef(
+      Routes.dailyTimelineView,
+      page: _i14.DailyTimelineView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
@@ -106,7 +131,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<StartupViewArguments>(
         orElse: () => const StartupViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i2.StartupView(key: args.key),
         settings: data,
       );
@@ -115,7 +140,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<OnboardingViewArguments>(
         orElse: () => const OnboardingViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.OnboardingView(key: args.key),
         settings: data,
       );
@@ -124,7 +149,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<HomeViewArguments>(
         orElse: () => const HomeViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.HomeView(key: args.key),
         settings: data,
       );
@@ -133,7 +158,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<FeelingViewArguments>(
         orElse: () => const FeelingViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.FeelingView(key: args.key),
         settings: data,
       );
@@ -142,7 +167,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<BreathViewArguments>(
         orElse: () => const BreathViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.BreathView(key: args.key),
         settings: data,
       );
@@ -151,7 +176,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<OfframpViewArguments>(
         orElse: () => const OfframpViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i7.OfframpView(key: args.key),
         settings: data,
       );
@@ -160,7 +185,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ResolutionViewArguments>(
         orElse: () => const ResolutionViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.ResolutionView(key: args.key),
         settings: data,
       );
@@ -169,7 +194,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ProgressViewArguments>(
         orElse: () => const ProgressViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.ProgressView(key: args.key),
         settings: data,
       );
@@ -178,7 +203,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<UsageOptInViewArguments>(
         orElse: () => const UsageOptInViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i10.UsageOptInView(key: args.key),
         settings: data,
       );
@@ -187,8 +212,35 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AppInterceptionViewArguments>(
         orElse: () => const AppInterceptionViewArguments(),
       );
-      return _i12.MaterialPageRoute<dynamic>(
+      return _i15.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.AppInterceptionView(key: args.key),
+        settings: data,
+      );
+    },
+    _i12.MainDashboardView: (data) {
+      final args = data.getArgs<MainDashboardViewArguments>(
+        orElse: () => const MainDashboardViewArguments(),
+      );
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => _i12.MainDashboardView(key: args.key),
+        settings: data,
+      );
+    },
+    _i13.UsageRecapView: (data) {
+      final args = data.getArgs<UsageRecapViewArguments>(
+        orElse: () => const UsageRecapViewArguments(),
+      );
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => _i13.UsageRecapView(key: args.key),
+        settings: data,
+      );
+    },
+    _i14.DailyTimelineView: (data) {
+      final args = data.getArgs<DailyTimelineViewArguments>(
+        orElse: () => const DailyTimelineViewArguments(),
+      );
+      return _i15.MaterialPageRoute<dynamic>(
+        builder: (context) => _i14.DailyTimelineView(key: args.key),
         settings: data,
       );
     },
@@ -204,7 +256,7 @@ class StackedRouter extends _i1.RouterBase {
 class StartupViewArguments {
   const StartupViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -226,7 +278,7 @@ class StartupViewArguments {
 class OnboardingViewArguments {
   const OnboardingViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -248,7 +300,7 @@ class OnboardingViewArguments {
 class HomeViewArguments {
   const HomeViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -270,7 +322,7 @@ class HomeViewArguments {
 class FeelingViewArguments {
   const FeelingViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -292,7 +344,7 @@ class FeelingViewArguments {
 class BreathViewArguments {
   const BreathViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -314,7 +366,7 @@ class BreathViewArguments {
 class OfframpViewArguments {
   const OfframpViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -336,7 +388,7 @@ class OfframpViewArguments {
 class ResolutionViewArguments {
   const ResolutionViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -358,7 +410,7 @@ class ResolutionViewArguments {
 class ProgressViewArguments {
   const ProgressViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -380,7 +432,7 @@ class ProgressViewArguments {
 class UsageOptInViewArguments {
   const UsageOptInViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -402,7 +454,7 @@ class UsageOptInViewArguments {
 class AppInterceptionViewArguments {
   const AppInterceptionViewArguments({this.key});
 
-  final _i12.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -421,9 +473,75 @@ class AppInterceptionViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i13.NavigationService {
+class MainDashboardViewArguments {
+  const MainDashboardViewArguments({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant MainDashboardViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class UsageRecapViewArguments {
+  const UsageRecapViewArguments({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant UsageRecapViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+class DailyTimelineViewArguments {
+  const DailyTimelineViewArguments({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant DailyTimelineViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i16.NavigationService {
   Future<dynamic> navigateToStartupView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -439,7 +557,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToOnboardingView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -455,7 +573,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToHomeView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -471,7 +589,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToFeelingView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -487,7 +605,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToBreathView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -503,7 +621,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToOfframpView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -519,7 +637,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToResolutionView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -535,7 +653,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToProgressView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -551,7 +669,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToUsageOptInView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -567,7 +685,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToAppInterceptionView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -582,8 +700,56 @@ extension NavigatorStateExtension on _i13.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToMainDashboardView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.mainDashboardView,
+        arguments: MainDashboardViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToUsageRecapView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.usageRecapView,
+        arguments: UsageRecapViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToDailyTimelineView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.dailyTimelineView,
+        arguments: DailyTimelineViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithStartupView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -599,7 +765,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithOnboardingView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -615,7 +781,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithHomeView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -631,7 +797,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithFeelingView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -647,7 +813,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithBreathView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -663,7 +829,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithOfframpView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -679,7 +845,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithResolutionView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -695,7 +861,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithProgressView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -711,7 +877,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithUsageOptInView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -727,7 +893,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithAppInterceptionView({
-    _i12.Key? key,
+    _i15.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -736,6 +902,54 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.appInterceptionView,
         arguments: AppInterceptionViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithMainDashboardView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.mainDashboardView,
+        arguments: MainDashboardViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithUsageRecapView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.usageRecapView,
+        arguments: UsageRecapViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithDailyTimelineView({
+    _i15.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.dailyTimelineView,
+        arguments: DailyTimelineViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

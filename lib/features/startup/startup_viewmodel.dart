@@ -15,7 +15,7 @@ class StartupViewModel extends BaseViewModel {
     await _invitationService.init();
 
     if (_settingsService.setupComplete) {
-      await _navigationService.replaceWithHomeView();
+      await _navigationService.replaceWithMainDashboardView();
     } else {
       await _navigationService.replaceWithOnboardingView();
     }

@@ -43,6 +43,20 @@ class MainActivity : FlutterActivity() {
                         result.error("QUERY_FAILED", e.message, null)
                     }
                 }
+                "queryUsageTimeline" -> {
+                    val startMs = call.argument<Long>("startMs")
+                    val endMs = call.argument<Long>("endMs")
+                    if (startMs == null || endMs == null) {
+                        result.error("INVALID_ARGS", "startMs and endMs are required", null)
+                        return@setMethodCallHandler
+                    }
+                    try {
+                        val timeline = queryUsageTimeline(startMs, endMs)
+                        result.success(timeline)
+                    } catch (e: Exception) {
+                        result.error("QUERY_FAILED", e.message, null)
+                    }
+                }
                 else -> result.notImplemented()
             }
         }
@@ -131,6 +145,69 @@ class MainActivity : FlutterActivity() {
                 "unlocks" to it.unlocks
             )
         }
+    }
+
+    private fun queryUsageTimeline(startMs: Long, endMs: Long): List<Map<String, Any>> {
+        val usm = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val events = usm.queryEvents(startMs, endMs)
+
+        val sessions = mutableListOf<Map<String, Any>>()
+        val event = UsageEvents.Event()
+        var currentPackage: String? = null
+        var sessionStartMs: Long = 0
+
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event)
+            val pkg = event.packageName
+
+            when (event.eventType) {
+                UsageEvents.Event.ACTIVITY_RESUMED -> {
+                    if (currentPackage == null || currentPackage != pkg) {
+                        // Finish previous session if one exists
+                        if (currentPackage != null && sessionStartMs > 0 && event.timeStamp > sessionStartMs) {
+                            val duration = event.timeStamp - sessionStartMs
+                            if (duration > 0) { // filter out 0 duration sessions
+                                sessions.add(mapOf(
+                                    "packageName" to currentPackage!!,
+                                    "startTime" to sessionStartMs,
+                                    "endTime" to event.timeStamp
+                                ))
+                            }
+                        }
+                        currentPackage = pkg
+                        sessionStartMs = event.timeStamp
+                    }
+                }
+                UsageEvents.Event.ACTIVITY_PAUSED, UsageEvents.Event.ACTIVITY_STOPPED -> {
+                    if (currentPackage == pkg && sessionStartMs > 0 && event.timeStamp > sessionStartMs) {
+                        val duration = event.timeStamp - sessionStartMs
+                        if (duration > 0) {
+                            sessions.add(mapOf(
+                                "packageName" to currentPackage!!,
+                                "startTime" to sessionStartMs,
+                                "endTime" to event.timeStamp
+                            ))
+                        }
+                        currentPackage = null
+                        sessionStartMs = 0
+                    }
+                }
+            }
+        }
+
+        // Handle unclosed session
+        if (currentPackage != null && sessionStartMs > 0 && endMs > sessionStartMs) {
+             val duration = endMs - sessionStartMs
+             if (duration > 0) {
+                 sessions.add(mapOf(
+                     "packageName" to currentPackage!!,
+                     "startTime" to sessionStartMs,
+                     "endTime" to endMs
+                 ))
+             }
+        }
+
+        return sessions
     }
     
     private class HourlyBucket(val hourStartMs: Long) {

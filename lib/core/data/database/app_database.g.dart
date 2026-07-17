@@ -632,17 +632,256 @@ class UsageBucketsCompanion extends UpdateCompanion<UsageBucket> {
   }
 }
 
+class $AppUsageSessionsTable extends AppUsageSessions
+    with TableInfo<$AppUsageSessionsTable, AppUsageSession> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AppUsageSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _packageNameMeta =
+      const VerificationMeta('packageName');
+  @override
+  late final GeneratedColumn<String> packageName = GeneratedColumn<String>(
+      'package_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
+  @override
+  late final GeneratedColumn<int> startTime = GeneratedColumn<int>(
+      'start_time', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
+  @override
+  late final GeneratedColumn<int> endTime = GeneratedColumn<int>(
+      'end_time', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [packageName, startTime, endTime];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'app_usage_sessions';
+  @override
+  VerificationContext validateIntegrity(Insertable<AppUsageSession> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('package_name')) {
+      context.handle(
+          _packageNameMeta,
+          packageName.isAcceptableOrUnknown(
+              data['package_name']!, _packageNameMeta));
+    } else if (isInserting) {
+      context.missing(_packageNameMeta);
+    }
+    if (data.containsKey('start_time')) {
+      context.handle(_startTimeMeta,
+          startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta));
+    } else if (isInserting) {
+      context.missing(_startTimeMeta);
+    }
+    if (data.containsKey('end_time')) {
+      context.handle(_endTimeMeta,
+          endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta));
+    } else if (isInserting) {
+      context.missing(_endTimeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {packageName, startTime, endTime};
+  @override
+  AppUsageSession map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AppUsageSession(
+      packageName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}package_name'])!,
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}start_time'])!,
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}end_time'])!,
+    );
+  }
+
+  @override
+  $AppUsageSessionsTable createAlias(String alias) {
+    return $AppUsageSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class AppUsageSession extends DataClass implements Insertable<AppUsageSession> {
+  final String packageName;
+  final int startTime;
+  final int endTime;
+  const AppUsageSession(
+      {required this.packageName,
+      required this.startTime,
+      required this.endTime});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['package_name'] = Variable<String>(packageName);
+    map['start_time'] = Variable<int>(startTime);
+    map['end_time'] = Variable<int>(endTime);
+    return map;
+  }
+
+  AppUsageSessionsCompanion toCompanion(bool nullToAbsent) {
+    return AppUsageSessionsCompanion(
+      packageName: Value(packageName),
+      startTime: Value(startTime),
+      endTime: Value(endTime),
+    );
+  }
+
+  factory AppUsageSession.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AppUsageSession(
+      packageName: serializer.fromJson<String>(json['packageName']),
+      startTime: serializer.fromJson<int>(json['startTime']),
+      endTime: serializer.fromJson<int>(json['endTime']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'packageName': serializer.toJson<String>(packageName),
+      'startTime': serializer.toJson<int>(startTime),
+      'endTime': serializer.toJson<int>(endTime),
+    };
+  }
+
+  AppUsageSession copyWith(
+          {String? packageName, int? startTime, int? endTime}) =>
+      AppUsageSession(
+        packageName: packageName ?? this.packageName,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+      );
+  AppUsageSession copyWithCompanion(AppUsageSessionsCompanion data) {
+    return AppUsageSession(
+      packageName:
+          data.packageName.present ? data.packageName.value : this.packageName,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppUsageSession(')
+          ..write('packageName: $packageName, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(packageName, startTime, endTime);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AppUsageSession &&
+          other.packageName == this.packageName &&
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime);
+}
+
+class AppUsageSessionsCompanion extends UpdateCompanion<AppUsageSession> {
+  final Value<String> packageName;
+  final Value<int> startTime;
+  final Value<int> endTime;
+  final Value<int> rowid;
+  const AppUsageSessionsCompanion({
+    this.packageName = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AppUsageSessionsCompanion.insert({
+    required String packageName,
+    required int startTime,
+    required int endTime,
+    this.rowid = const Value.absent(),
+  })  : packageName = Value(packageName),
+        startTime = Value(startTime),
+        endTime = Value(endTime);
+  static Insertable<AppUsageSession> custom({
+    Expression<String>? packageName,
+    Expression<int>? startTime,
+    Expression<int>? endTime,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (packageName != null) 'package_name': packageName,
+      if (startTime != null) 'start_time': startTime,
+      if (endTime != null) 'end_time': endTime,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AppUsageSessionsCompanion copyWith(
+      {Value<String>? packageName,
+      Value<int>? startTime,
+      Value<int>? endTime,
+      Value<int>? rowid}) {
+    return AppUsageSessionsCompanion(
+      packageName: packageName ?? this.packageName,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (packageName.present) {
+      map['package_name'] = Variable<String>(packageName.value);
+    }
+    if (startTime.present) {
+      map['start_time'] = Variable<int>(startTime.value);
+    }
+    if (endTime.present) {
+      map['end_time'] = Variable<int>(endTime.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppUsageSessionsCompanion(')
+          ..write('packageName: $packageName, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UrgeEventsTable urgeEvents = $UrgeEventsTable(this);
   late final $UsageBucketsTable usageBuckets = $UsageBucketsTable(this);
+  late final $AppUsageSessionsTable appUsageSessions =
+      $AppUsageSessionsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [urgeEvents, usageBuckets];
+      [urgeEvents, usageBuckets, appUsageSessions];
 }
 
 typedef $$UrgeEventsTableCreateCompanionBuilder = UrgeEventsCompanion Function({
@@ -980,6 +1219,150 @@ typedef $$UsageBucketsTableProcessedTableManager = ProcessedTableManager<
     ),
     UsageBucket,
     PrefetchHooks Function()>;
+typedef $$AppUsageSessionsTableCreateCompanionBuilder
+    = AppUsageSessionsCompanion Function({
+  required String packageName,
+  required int startTime,
+  required int endTime,
+  Value<int> rowid,
+});
+typedef $$AppUsageSessionsTableUpdateCompanionBuilder
+    = AppUsageSessionsCompanion Function({
+  Value<String> packageName,
+  Value<int> startTime,
+  Value<int> endTime,
+  Value<int> rowid,
+});
+
+class $$AppUsageSessionsTableFilterComposer
+    extends Composer<_$AppDatabase, $AppUsageSessionsTable> {
+  $$AppUsageSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get packageName => $composableBuilder(
+      column: $table.packageName, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnFilters(column));
+}
+
+class $$AppUsageSessionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $AppUsageSessionsTable> {
+  $$AppUsageSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get packageName => $composableBuilder(
+      column: $table.packageName, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnOrderings(column));
+}
+
+class $$AppUsageSessionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $AppUsageSessionsTable> {
+  $$AppUsageSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get packageName => $composableBuilder(
+      column: $table.packageName, builder: (column) => column);
+
+  GeneratedColumn<int> get startTime =>
+      $composableBuilder(column: $table.startTime, builder: (column) => column);
+
+  GeneratedColumn<int> get endTime =>
+      $composableBuilder(column: $table.endTime, builder: (column) => column);
+}
+
+class $$AppUsageSessionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $AppUsageSessionsTable,
+    AppUsageSession,
+    $$AppUsageSessionsTableFilterComposer,
+    $$AppUsageSessionsTableOrderingComposer,
+    $$AppUsageSessionsTableAnnotationComposer,
+    $$AppUsageSessionsTableCreateCompanionBuilder,
+    $$AppUsageSessionsTableUpdateCompanionBuilder,
+    (
+      AppUsageSession,
+      BaseReferences<_$AppDatabase, $AppUsageSessionsTable, AppUsageSession>
+    ),
+    AppUsageSession,
+    PrefetchHooks Function()> {
+  $$AppUsageSessionsTableTableManager(
+      _$AppDatabase db, $AppUsageSessionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AppUsageSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AppUsageSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AppUsageSessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> packageName = const Value.absent(),
+            Value<int> startTime = const Value.absent(),
+            Value<int> endTime = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AppUsageSessionsCompanion(
+            packageName: packageName,
+            startTime: startTime,
+            endTime: endTime,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String packageName,
+            required int startTime,
+            required int endTime,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AppUsageSessionsCompanion.insert(
+            packageName: packageName,
+            startTime: startTime,
+            endTime: endTime,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AppUsageSessionsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $AppUsageSessionsTable,
+    AppUsageSession,
+    $$AppUsageSessionsTableFilterComposer,
+    $$AppUsageSessionsTableOrderingComposer,
+    $$AppUsageSessionsTableAnnotationComposer,
+    $$AppUsageSessionsTableCreateCompanionBuilder,
+    $$AppUsageSessionsTableUpdateCompanionBuilder,
+    (
+      AppUsageSession,
+      BaseReferences<_$AppDatabase, $AppUsageSessionsTable, AppUsageSession>
+    ),
+    AppUsageSession,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -988,4 +1371,6 @@ class $AppDatabaseManager {
       $$UrgeEventsTableTableManager(_db, _db.urgeEvents);
   $$UsageBucketsTableTableManager get usageBuckets =>
       $$UsageBucketsTableTableManager(_db, _db.usageBuckets);
+  $$AppUsageSessionsTableTableManager get appUsageSessions =>
+      $$AppUsageSessionsTableTableManager(_db, _db.appUsageSessions);
 }

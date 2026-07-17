@@ -55,10 +55,5 @@ public final class GeneratedPluginRegistrant {
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin sqlite3_flutter_libs, eu.simonbinder.sqlite3_flutter_libs.Sqlite3FlutterLibsPlugin", e);
     }
-    try {
-      flutterEngine.getPlugins().add(new io.github.parassharmaa.usage_stats.UsageStatsPlugin());
-    } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin usage_stats, io.github.parassharmaa.usage_stats.UsageStatsPlugin", e);
-    }
   }
 }
