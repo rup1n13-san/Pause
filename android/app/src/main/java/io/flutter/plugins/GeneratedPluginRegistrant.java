@@ -16,6 +16,11 @@ public final class GeneratedPluginRegistrant {
   private static final String TAG = "GeneratedPluginRegistrant";
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     try {
+      flutterEngine.getPlugins().add(new id.flutter.flutter_background_service.FlutterBackgroundServicePlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin flutter_background_service_android, id.flutter.flutter_background_service.FlutterBackgroundServicePlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin flutter_local_notifications, com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin", e);
@@ -24,6 +29,11 @@ public final class GeneratedPluginRegistrant {
       flutterEngine.getPlugins().add(new net.wolverinebeach.flutter_timezone.FlutterTimezonePlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin flutter_timezone, net.wolverinebeach.flutter_timezone.FlutterTimezonePlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new com.sharmadhiraj.installed_apps.InstalledAppsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin installed_apps, com.sharmadhiraj.installed_apps.InstalledAppsPlugin", e);
     }
     try {
       flutterEngine.getPlugins().add(new com.github.dart_lang.jni.JniPlugin());
@@ -44,6 +54,11 @@ public final class GeneratedPluginRegistrant {
       flutterEngine.getPlugins().add(new eu.simonbinder.sqlite3_flutter_libs.Sqlite3FlutterLibsPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin sqlite3_flutter_libs, eu.simonbinder.sqlite3_flutter_libs.Sqlite3FlutterLibsPlugin", e);
+    }
+    try {
+      flutterEngine.getPlugins().add(new io.github.parassharmaa.usage_stats.UsageStatsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin usage_stats, io.github.parassharmaa.usage_stats.UsageStatsPlugin", e);
     }
   }
 }

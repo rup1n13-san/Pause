@@ -10,6 +10,10 @@ class SettingsService {
   static const _kInviteOfferDismissed = 'pause_invite_offer_dismissed';
   static const _kLastInvitationFiredAt = 'pause_last_invitation_fired_at';
 
+  static const _kInterceptionEnabled = 'pause_interception_enabled';
+  static const _kInterceptedApps = 'pause_intercepted_apps';
+  static const _kLastInterceptedAt = 'pause_last_intercepted_at';
+
   /// Every substitute the setup screen offers as a chip.
   static const presetSubstitutes = <String>[
     'Push-ups',
@@ -69,4 +73,18 @@ class SettingsService {
   int? get lastInvitationFiredAt => _prefs.getInt(_kLastInvitationFiredAt);
   Future<void> setLastInvitationFiredAt(int value) =>
       _prefs.setInt(_kLastInvitationFiredAt, value);
+
+  bool get interceptionEnabled =>
+      _prefs.getBool(_kInterceptionEnabled) ?? false;
+  Future<void> setInterceptionEnabled(bool value) =>
+      _prefs.setBool(_kInterceptionEnabled, value);
+
+  List<String> get interceptedApps =>
+      _prefs.getStringList(_kInterceptedApps) ?? [];
+  Future<void> setInterceptedApps(List<String> value) =>
+      _prefs.setStringList(_kInterceptedApps, value);
+
+  int? get lastInterceptedAt => _prefs.getInt(_kLastInterceptedAt);
+  Future<void> setLastInterceptedAt(int value) =>
+      _prefs.setInt(_kLastInterceptedAt, value);
 }

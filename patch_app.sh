@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'INNER_EOF' > lib/app/app.dart
 import 'package:mobile/core/services/database_service.dart';
 import 'package:mobile/core/services/invitation_service.dart';
 import 'package:mobile/core/services/ritual_session_service.dart';
@@ -56,3 +58,4 @@ import 'package:mobile/features/app_interception/app_interception_view.dart';
   ],
 )
 class App {}
+INNER_EOF

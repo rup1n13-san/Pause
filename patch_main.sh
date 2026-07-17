@@ -1,3 +1,5 @@
+#!/bin/bash
+cat << 'INNER_EOF' > lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:mobile/app/app.bottomsheets.dart';
 import 'package:mobile/app/app.dialogs.dart';
@@ -37,3 +39,4 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+INNER_EOF

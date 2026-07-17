@@ -10,6 +10,7 @@ import 'package:flutter/material.dart' as _i4;
 import 'package:mobile/core/data/database/app_database.dart' as _i9;
 import 'package:mobile/core/models/pause_enums.dart' as _i8;
 import 'package:mobile/core/services/database_service.dart' as _i7;
+import 'package:mobile/core/services/interception_service.dart' as _i13;
 import 'package:mobile/core/services/invitation_service.dart' as _i11;
 import 'package:mobile/core/services/settings_service.dart' as _i10;
 import 'package:mobile/core/services/usage_stats_service.dart' as _i12;
@@ -802,6 +803,20 @@ class MockSettingsService extends _i1.Mock implements _i10.SettingsService {
       ) as bool);
 
   @override
+  bool get interceptionEnabled => (super.noSuchMethod(
+        Invocation.getter(#interceptionEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  List<String> get interceptedApps => (super.noSuchMethod(
+        Invocation.getter(#interceptedApps),
+        returnValue: <String>[],
+        returnValueForMissingStub: <String>[],
+      ) as List<String>);
+
+  @override
   _i5.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
           #init,
@@ -868,6 +883,37 @@ class MockSettingsService extends _i1.Mock implements _i10.SettingsService {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setInterceptionEnabled(bool? value) => (super.noSuchMethod(
+        Invocation.method(
+          #setInterceptionEnabled,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setInterceptedApps(List<String>? value) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setInterceptedApps,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setLastInterceptedAt(int? value) => (super.noSuchMethod(
+        Invocation.method(
+          #setLastInterceptedAt,
+          [value],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
 
 /// A class which mocks [InvitationService].
@@ -927,9 +973,55 @@ class MockUsageStatsService extends _i1.Mock implements _i12.UsageStatsService {
       ) as _i5.Future<void>);
 
   @override
+  _i5.Future<String?> getForegroundApp() => (super.noSuchMethod(
+        Invocation.method(
+          #getForegroundApp,
+          [],
+        ),
+        returnValue: _i5.Future<String?>.value(),
+        returnValueForMissingStub: _i5.Future<String?>.value(),
+      ) as _i5.Future<String?>);
+
+  @override
   _i5.Future<void> syncUsage() => (super.noSuchMethod(
         Invocation.method(
           #syncUsage,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+}
+
+/// A class which mocks [InterceptionService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInterceptionService extends _i1.Mock
+    implements _i13.InterceptionService {
+  @override
+  _i5.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> startService() => (super.noSuchMethod(
+        Invocation.method(
+          #startService,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> stopService() => (super.noSuchMethod(
+        Invocation.method(
+          #stopService,
           [],
         ),
         returnValue: _i5.Future<void>.value(),

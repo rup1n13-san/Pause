@@ -22,6 +22,14 @@ class UsageStatsService {
     } catch (_) {}
   }
 
+  Future<String?> getForegroundApp() async {
+    try {
+      return await _channel.invokeMethod<String>('getForegroundApp');
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> syncUsage() async {
     if (!await hasAccess()) return;
 
