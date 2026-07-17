@@ -18,6 +18,9 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:mobile/core/services/usage_stats_service.dart';
 import 'package:mobile/features/usage_opt_in/usage_opt_in_view.dart';
 import 'package:mobile/features/app_interception/app_interception_view.dart';
+import 'package:mobile/features/main_dashboard/main_dashboard_view.dart';
+import 'package:mobile/features/usage/usage_recap_view.dart';
+import 'package:mobile/features/usage/daily_timeline_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -32,6 +35,9 @@ import 'package:mobile/features/app_interception/app_interception_view.dart';
     MaterialRoute(page: ProgressView),
     MaterialRoute(page: UsageOptInView),
     MaterialRoute(page: AppInterceptionView),
+    MaterialRoute(page: MainDashboardView),
+    MaterialRoute(page: UsageRecapView),
+    MaterialRoute(page: DailyTimelineView),
 // @stacked-route
   ],
   dependencies: [

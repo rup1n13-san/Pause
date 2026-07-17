@@ -48,4 +48,28 @@ class DatabaseService {
           ..where((t) => t.day.isBiggerOrEqualValue(sinceDay)))
         .get();
   }
+
+  Future<void> insertAppUsageSessions(List<AppUsageSession> sessions) async {
+    await _db.batch((batch) {
+      batch.insertAll(
+        _db.appUsageSessions,
+        sessions.map((s) => AppUsageSessionsCompanion.insert(
+              packageName: s.packageName,
+              startTime: s.startTime,
+              endTime: s.endTime,
+            )),
+        mode: InsertMode.insertOrIgnore,
+      );
+    });
+  }
+
+  Future<List<AppUsageSession>> getAppUsageSessionsForDay(DateTime day) {
+    final startOfDay = DateTime(day.year, day.month, day.day).millisecondsSinceEpoch;
+    final endOfDay = DateTime(day.year, day.month, day.day, 23, 59, 59, 999).millisecondsSinceEpoch;
+
+    return (_db.select(_db.appUsageSessions)
+          ..where((t) => t.startTime.isBetweenValues(startOfDay, endOfDay))
+          ..orderBy([(t) => OrderingTerm(expression: t.startTime)]))
+        .get();
+  }
 }

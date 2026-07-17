@@ -762,6 +762,32 @@ class MockDatabaseService extends _i1.Mock implements _i7.DatabaseService {
         returnValueForMissingStub:
             _i5.Future<List<_i9.UsageBucket>>.value(<_i9.UsageBucket>[]),
       ) as _i5.Future<List<_i9.UsageBucket>>);
+
+  @override
+  _i5.Future<void> insertAppUsageSessions(
+          List<_i9.AppUsageSession>? sessions) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #insertAppUsageSessions,
+          [sessions],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<List<_i9.AppUsageSession>> getAppUsageSessionsForDay(
+          DateTime? day) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAppUsageSessionsForDay,
+          [day],
+        ),
+        returnValue: _i5.Future<List<_i9.AppUsageSession>>.value(
+            <_i9.AppUsageSession>[]),
+        returnValueForMissingStub: _i5.Future<List<_i9.AppUsageSession>>.value(
+            <_i9.AppUsageSession>[]),
+      ) as _i5.Future<List<_i9.AppUsageSession>>);
 }
 
 /// A class which mocks [SettingsService].

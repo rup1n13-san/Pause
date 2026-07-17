@@ -60,6 +60,26 @@ class UsageStatsService {
 
         await _db.upsertUsageBuckets(buckets);
       }
+
+      // Also sync granular timeline sessions for the last 7 days
+      final timelineResult = await _channel.invokeMethod<List<dynamic>>(
+          'queryUsageTimeline',
+          {'startMs': startMs, 'endMs': endMs},
+      );
+
+      if (timelineResult != null) {
+          final sessions = timelineResult.map((item) {
+              final map = Map<String, dynamic>.from(item);
+              return AppUsageSession(
+
+                  packageName: map['packageName'] as String,
+                  startTime: map['startTime'] as int,
+                  endTime: map['endTime'] as int,
+              );
+          }).toList();
+          await _db.insertAppUsageSessions(sessions);
+      }
+
     } catch (_) {
       // Fail-soft: swallow errors, app never degrades
     }

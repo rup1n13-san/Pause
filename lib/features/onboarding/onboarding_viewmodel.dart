@@ -7,34 +7,36 @@ import 'package:mobile/core/services/settings_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-/// First-run setup and the "your substitutes" editor are the same screen. On
-/// first run it replaces into Home; reached from Home to edit, it pops back.
 class OnboardingViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _settingsService = locator<SettingsService>();
   final _invitationService = locator<InvitationService>();
 
-  final noteController = TextEditingController();
+  late List<String> presets;
   final Set<String> _selected = {};
+  final noteController = TextEditingController();
 
-  bool _invitesEnabled = false;
-  bool get invitesEnabled => _invitesEnabled;
-
-  /// Captured once, before we persist anything, so it reflects how the screen
-  /// was entered.
   late final bool isEditing = _settingsService.setupComplete;
 
-  List<String> get presets => SettingsService.presetSubstitutes;
-  bool isSelected(String substitute) => _selected.contains(substitute);
-
   void init() {
-    _selected
-      ..clear()
-      ..addAll(_settingsService.substitutes);
+    presets = List.of(SettingsService.presetSubstitutes);
+    _selected.addAll(_settingsService.substitutes);
     noteController.text = _settingsService.habitNote;
-    _invitesEnabled = _settingsService.invitesEnabled ?? false;
-    rebuildUi();
+    notifyListeners();
   }
+
+  bool isSelected(String sub) => _selected.contains(sub);
+
+  void toggle(String sub) {
+    if (_selected.contains(sub)) {
+      _selected.remove(sub);
+    } else {
+      _selected.add(sub);
+    }
+    notifyListeners();
+  }
+
+  bool get invitesEnabled => _settingsService.invitesEnabled ?? false;
 
   Future<void> toggleInvites(bool value) async {
     if (value) {
@@ -42,53 +44,27 @@ class OnboardingViewModel extends BaseViewModel {
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
       final granted = await plugin?.requestNotificationsPermission();
-      _invitesEnabled = granted ?? false;
+      if (granted == true) {
+        await _settingsService.setInvitesEnabled(true);
+        await _invitationService.syncSchedule();
+      }
     } else {
-      _invitesEnabled = false;
+      await _settingsService.setInvitesEnabled(false);
+      await _invitationService.syncSchedule();
     }
-    rebuildUi();
-  }
-
-  void toggle(String substitute) {
-    if (!_selected.remove(substitute)) _selected.add(substitute);
-    rebuildUi();
+    notifyListeners();
   }
 
   Future<void> finishSetup() async {
-    try {
-      // Preserve preset order; never persist an empty list (the Off-ramp needs
-      // at least one option).
-      final chosen = presets.where(_selected.contains).toList();
-      final substitutes = chosen.isEmpty ? const ['Walk'] : chosen;
-
-      await _settingsService.completeSetup(
-        substitutes: substitutes,
-        note: noteController.text.trim(),
-      );
-      await _settingsService.setInvitesEnabled(_invitesEnabled);
-      await _invitationService.syncSchedule();
-
-      if (isEditing) {
+    final note = noteController.text.trim();
+    await _settingsService.completeSetup(
+      substitutes: _selected.toList(),
+      note: note.isNotEmpty ? note : null,
+    );
+    if (isEditing) {
         _navigationService.back();
-      } else {
-        await _navigationService.replaceWithHomeView();
-      }
-    } catch (e) {
-      // Log error rather than freezing UI on unhandled throws
-      debugPrint('Error finishing setup: $e');
-      // If an error occurs (e.g. scheduling notifications fails), ensure we
-      // still proceed so the user isn't hard-locked on this screen.
-      if (isEditing) {
-        _navigationService.back();
-      } else {
-        await _navigationService.replaceWithHomeView();
-      }
+    } else {
+        await _navigationService.replaceWithMainDashboardView();
     }
-  }
-
-  @override
-  void dispose() {
-    noteController.dispose();
-    super.dispose();
   }
 }

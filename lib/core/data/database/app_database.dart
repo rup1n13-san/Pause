@@ -29,7 +29,17 @@ class UsageBuckets extends Table {
   Set<Column> get primaryKey => {day, hour};
 }
 
-@DriftDatabase(tables: [UrgeEvents, UsageBuckets])
+/// Granular app usage sessions.
+class AppUsageSessions extends Table {
+  TextColumn get packageName => text()();
+  IntColumn get startTime => integer()();
+  IntColumn get endTime => integer()();
+
+  @override
+  Set<Column> get primaryKey => {packageName, startTime, endTime};
+}
+
+@DriftDatabase(tables: [UrgeEvents, UsageBuckets, AppUsageSessions])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -37,7 +47,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -51,6 +61,10 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 3) {
           await m.createTable(usageBuckets);
+        }
+        if (from < 5) {
+          // Changed schema for AppUsageSessions to have composite primary key
+          await m.createTable(appUsageSessions);
         }
       },
     );

@@ -16,6 +16,11 @@ public final class GeneratedPluginRegistrant {
   private static final String TAG = "GeneratedPluginRegistrant";
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     try {
+      flutterEngine.getPlugins().add(new fr.g123k.deviceapps.DeviceAppsPlugin());
+    } catch (Exception e) {
+      Log.e(TAG, "Error registering plugin device_apps, fr.g123k.deviceapps.DeviceAppsPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new id.flutter.flutter_background_service.FlutterBackgroundServicePlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin flutter_background_service_android, id.flutter.flutter_background_service.FlutterBackgroundServicePlugin", e);
@@ -54,11 +59,6 @@ public final class GeneratedPluginRegistrant {
       flutterEngine.getPlugins().add(new eu.simonbinder.sqlite3_flutter_libs.Sqlite3FlutterLibsPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin sqlite3_flutter_libs, eu.simonbinder.sqlite3_flutter_libs.Sqlite3FlutterLibsPlugin", e);
-    }
-    try {
-      flutterEngine.getPlugins().add(new io.github.parassharmaa.usage_stats.UsageStatsPlugin());
-    } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin usage_stats, io.github.parassharmaa.usage_stats.UsageStatsPlugin", e);
     }
   }
 }
