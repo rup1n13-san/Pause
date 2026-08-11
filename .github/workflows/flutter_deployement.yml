@@ -17,15 +17,32 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version-file: mobile/pubspec.yaml
+          channel: stable
+          flutter-version: 3.44.1
       - run: flutter pub get
+      - name: Patch usage_stats Gradle repositories
+        run: |
+          for gradle_file in "$HOME"/.pub-cache/hosted/pub.dev/usage_stats-*/android/build.gradle; do
+            [ -f "$gradle_file" ] || continue
+            sed -i 's/jcenter()/mavenCentral()/g' "$gradle_file"
+          done
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build apk
-      - run: flutter build appbundle
+      - run: flutter build apk --release
+      - run: flutter build appbundle --release
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pause-app-build
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+          retention-days: 7
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
       - name: Distribute APK via Firebase
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-          --app ${{ secrets.FIREBASE_APP_ID }} \
-          --groups testers \
-          --token ${{ secrets.FIREBASE_TOKEN }}
+            --app ${{ secrets.FIREBASE_APP_ID }} \
+            --groups testers \
+            --token ${{ secrets.FIREBASE_TOKEN }}

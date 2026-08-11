@@ -1,0 +1,42 @@
+#!/bin/bash
+cat << 'INNER_EOF' > lib/main.dart
+import 'package:flutter/material.dart';
+import 'package:mobile/app/app.bottomsheets.dart';
+import 'package:mobile/app/app.dialogs.dart';
+import 'package:mobile/app/app.locator.dart';
+import 'package:mobile/app/app.router.dart';
+import 'package:mobile/core/theme/app_theme.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:mobile/core/services/interception_service.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
+  setupDialogUi();
+  setupBottomSheetUi();
+
+  // Initialize the background service
+  await locator<InterceptionService>().init();
+
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Pause',
+      debugShowCheckedModeBanner: false,
+      theme: PauseTheme.light,
+      darkTheme: PauseTheme.dark,
+      themeMode: ThemeMode.system,
+      initialRoute: Routes.startupView,
+      onGenerateRoute: StackedRouter().onGenerateRoute,
+      navigatorKey: StackedService.navigatorKey,
+      navigatorObservers: [StackedService.routeObserver],
+    );
+  }
+}
+INNER_EOF
